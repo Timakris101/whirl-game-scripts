@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class SpinWorld : MonoBehaviour {
     [SerializeField] private float spinSpeed;
-    [SerializeField] private Vector3 pivot;
 
     void Start() {
-        Cursor.visible = false;    
-    }
-
-    void Update() {
-        
+        Cursor.visible = false;
     }
 
     public void rotateWorld(float spinAmt, Vector3 pivot) {
