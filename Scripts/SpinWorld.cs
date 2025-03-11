@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpinWorld : MonoBehaviour {
-    public float spinSpeed;
-    public Vector3 pivot;
-    public GameObject player;
+    [SerializeField] private float spinSpeed;
+    [SerializeField] private Vector3 pivot;
+    [SerializeField] private GameObject player;
 
     void Start() {
         player = transform.parent.gameObject;
@@ -13,12 +13,12 @@ public class SpinWorld : MonoBehaviour {
     }
 
     void Update() {
-        pivot = player.transform.position;
-        transform.localEulerAngles = new Vector3(0, 0, transform.parent.GetComponent<PlayerController>().getDirection() * -1 * transform.parent.transform.localEulerAngles.z);
-        if (Input.GetKey("q")) {
+        pivot = player.transform.position; //moves pivot to center of player
+        transform.eulerAngles = new Vector3(0, 0, 0); //rotates it so it faces down
+        if (Input.GetKey("q")) { //if q spin counter-clockwise
             rotateWorld(-spinSpeed * Time.deltaTime, pivot);
         }
-        if (Input.GetKey("e")) {
+        if (Input.GetKey("e")) { //if e spin clockwise
             rotateWorld(spinSpeed * Time.deltaTime, pivot);
         }
     }

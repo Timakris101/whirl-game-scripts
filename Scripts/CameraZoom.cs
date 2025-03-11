@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraZoom : MonoBehaviour {
     private int min = 1;
-    public int max = 100;
+    [SerializeField] private int max = 100;
     void Update() {
         Camera camera = gameObject.GetComponent<Camera>();
         camera.orthographicSize -= Input.mouseScrollDelta.y;
