@@ -5,22 +5,13 @@ using UnityEngine;
 public class SpinWorld : MonoBehaviour {
     [SerializeField] private float spinSpeed;
     [SerializeField] private Vector3 pivot;
-    [SerializeField] private GameObject player;
 
     void Start() {
-        player = transform.parent.gameObject;
         Cursor.visible = false;    
     }
 
     void Update() {
-        pivot = player.transform.position; //moves pivot to center of player
-        transform.eulerAngles = new Vector3(0, 0, 0); //rotates it so it faces down
-        if (Input.GetKey("q")) { //if q spin counter-clockwise
-            rotateWorld(-spinSpeed * Time.deltaTime, pivot);
-        }
-        if (Input.GetKey("e")) { //if e spin clockwise
-            rotateWorld(spinSpeed * Time.deltaTime, pivot);
-        }
+        
     }
 
     public void rotateWorld(float spinAmt, Vector3 pivot) {
@@ -35,5 +26,9 @@ public class SpinWorld : MonoBehaviour {
                 obj.transform.localEulerAngles += new Vector3(0, 0, spinAmt * 180 / Mathf.PI); //rotates the object to make it face the right way
             }
         }
+    }
+
+    public float getSpinSpeed() {
+        return spinSpeed;
     }
 }

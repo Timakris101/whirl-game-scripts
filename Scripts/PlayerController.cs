@@ -46,6 +46,17 @@ public class PlayerController : MonoBehaviour {
         handleMovement();
         handleJumping();
         handleTurning();
+        handleWorldRotation();
+    }
+
+    void handleWorldRotation() {
+        SpinWorld whirlBallScript = GetComponent<SpinWorld>();
+        if (Input.GetKey("q")) { //if q spin counter-clockwise around player
+            whirlBallScript.rotateWorld(-whirlBallScript.getSpinSpeed() * Time.deltaTime, transform.position);
+        }
+        if (Input.GetKey("e")) { //if e spin clockwise around player
+            whirlBallScript.rotateWorld(whirlBallScript.getSpinSpeed() * Time.deltaTime, transform.position);
+        }
     }
 
     void handleTurning() { //makes the player face left or right depending on direction
