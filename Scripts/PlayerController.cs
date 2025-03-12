@@ -51,11 +51,20 @@ public class PlayerController : MonoBehaviour {
 
     void handleWorldRotation() {
         SpinWorld whirlBallScript = GetComponent<SpinWorld>();
+        ParticleSystem reactor = GetComponent<ParticleSystem>(); //particle system that plays "reactor" effect
+        bool worldRotating = false; //checks if there is need to ook at particlesystem
         if (Input.GetKey("q")) { //if q spin counter-clockwise around player
             whirlBallScript.rotateWorld(-whirlBallScript.getSpinSpeed() * Time.deltaTime, transform.position);
+            worldRotating = true; //if input then we want to look at particlesystem
         }
         if (Input.GetKey("e")) { //if e spin clockwise around player
             whirlBallScript.rotateWorld(whirlBallScript.getSpinSpeed() * Time.deltaTime, transform.position);
+            worldRotating = true; //if input then we want to look at particlesystem
+        }
+        if (worldRotating) { //if input then we want to look at particlesystem
+            if (!reactor.isPlaying) reactor.Play(); //if it isn't already playing play so it doesn't constantly reset
+        } else {
+            reactor.Stop();
         }
     }
 
