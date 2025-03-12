@@ -110,9 +110,9 @@ public class PlayerController : MonoBehaviour {
 
     void alignToWall() { // if contact with the ground the player aligns to the normal vector of the collision point, else aligns to nothing
         if (ground != null) {
-            transform.up = normalVector;
+            transform.rotation = Quaternion.LookRotation(transform.forward, normalVector); //Quaternion.LookRotation(forward, up) returns a transform that has the up facing the up value and the forward facing the forward value, the character is being set to look forward and its up vector to be aligned
         } else {
-            transform.up = Vector3.up;
+            transform.up = Vector3.up; //makes the transform upwards be global up
         }
     }
 
