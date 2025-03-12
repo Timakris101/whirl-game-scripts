@@ -41,10 +41,10 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        alignToWall();
-        stickToWall();
         handleMovement();
         handleJumping();
+        alignToWall();
+        stickToWall();
         handleTurning();
         handleWorldRotation();
     }
@@ -55,16 +55,16 @@ public class PlayerController : MonoBehaviour {
         bool worldRotating = false; //checks if there is need to ook at particlesystem
         if (Input.GetKey("q")) { //if q spin counter-clockwise around player
             whirlBallScript.rotateWorld(-whirlBallScript.getSpinSpeed() * Time.deltaTime, transform.position);
-            worldRotating = true; //if input then we want to look at particlesystem
+            worldRotating = !worldRotating; //if input on only one of the keys then we want to look at particlesystem
         }
         if (Input.GetKey("e")) { //if e spin clockwise around player
             whirlBallScript.rotateWorld(whirlBallScript.getSpinSpeed() * Time.deltaTime, transform.position);
-            worldRotating = true; //if input then we want to look at particlesystem
+            worldRotating = !worldRotating; //if input on only one of the keys then we want to look at particlesystem
         }
         if (worldRotating) { //if input then we want to look at particlesystem
-            if (!reactor.isPlaying) reactor.Play(); //if it isn't already playing play so it doesn't constantly reset
+            if (!reactor.isPlaying) reactor.Play(false); //if it isn't already playing play so it doesn't constantly reset
         } else {
-            reactor.Stop();
+            reactor.Stop(false);
         }
     }
 
@@ -77,19 +77,27 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKey("d")) {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y); //sets x speed to zero so it doesn’t keep its speed and move improperly
             GetComponent<Transform>().position += transform.right * speed * Time.deltaTime; //moves right
-            GetComponent<Animator>().speed = 1;  //makes the animation for the player play
+            if (GetComponent<Animator>().speed == 0) {//makes the animation for the player play, if only a or d
+                GetComponent<Animator>().speed = 1;  
+            } else {
+                GetComponent<Animator>().speed = 0;
+            }
             direction = 1; //makes the player face right
         }
         if (Input.GetKey("a")) {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y); //sets x speed to zero so it doesn’t keep its speed and move improperly
             GetComponent<Transform>().position += transform.right * speed * -1 * Time.deltaTime; //moves left
-            GetComponent<Animator>().speed = 1; //makes the animation for the player play
+            if (GetComponent<Animator>().speed == 0) {//makes the animation for the player play, if only a or d
+                GetComponent<Animator>().speed = 1;  
+            } else {
+                GetComponent<Animator>().speed = 0;
+            }
             direction = -1; //makes the player face left
         }
     }
 
-    void handleJumping() { //if w button unpressed or if the player is going downwards  then flutter has to be stopped
-        if (!Input.GetKey("w") || GetComponent<Rigidbody2D>().velocity.y < -1) {
+    void handleJumping() {
+        if (!Input.GetKey("w") || GetComponent<Rigidbody2D>().velocity.y < -1) { //if w button unpressed or if the player is going downwards then flutter has to be stopped
             ableToFlutter = false;
         }
         if (Input.GetKey("w") && canFlutter()) { //adds an extra force if w button is being held
@@ -106,6 +114,7 @@ public class PlayerController : MonoBehaviour {
             ground = null; //make sure it knows it is no longer on the ground
             coyoteTime = 0;  //if you jump you are no longer in coyote time
             startCoyoteTime = false;
+            transform.Find("JumpEffectArea").GetComponent<ParticleSystem>().Play(false); //if jump play jump particle effect
         }
     }
 
