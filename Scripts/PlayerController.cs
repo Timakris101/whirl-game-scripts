@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
     private bool inAir; //is the player in the air
     [SerializeField] private int direction = 1; //which way is the player facing
     private float undirectedlocalScaleX; //place to save the local scale of the x even while it is rotated
+    [SerializeField] private float spinSpeed; //how fast the player rotates towards the alignment vector
 
     void OnCollisionStay2D(Collision2D col) { //sets the normal vector to the normal of the ground at the point of contact 
         if (col.gameObject != gameObject && col.gameObject.tag.Equals("Surface")) {
@@ -73,7 +74,9 @@ public class PlayerController : MonoBehaviour {
 
     void handleMovement() {
         GetComponent<Animator>().speed = 0; //makes the animation be stopped  unless there is an input below
-        if (Input.GetKey("d")) {
+        bool canMove = true;
+        if (ground != null && transform.rotation != Quaternion.LookRotation(transform.forward, normalVector)) canMove = false; //if you are on ground and not aligned with vector you cant move
+        if (Input.GetKey("d") && canMove) {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y); //sets x speed to zero so it doesn’t keep its speed and move improperly
             GetComponent<Transform>().position += transform.right * speed * Time.deltaTime; //moves right
             if (GetComponent<Animator>().speed == 0) {//makes the animation for the player play, if only a or d
@@ -83,7 +86,7 @@ public class PlayerController : MonoBehaviour {
             }
             direction = 1; //makes the player face right
         }
-        if (Input.GetKey("a")) {
+        if (Input.GetKey("a") && canMove) {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y); //sets x speed to zero so it doesn’t keep its speed and move improperly
             GetComponent<Transform>().position += transform.right * speed * -1 * Time.deltaTime; //moves left
             if (GetComponent<Animator>().speed == 0) {//makes the animation for the player play, if only a or d
@@ -127,9 +130,9 @@ public class PlayerController : MonoBehaviour {
 
     void alignToWall() { // if contact with the ground the player aligns to the normal vector of the collision point, else aligns to nothing
         if (ground != null) {
-            transform.rotation = Quaternion.LookRotation(transform.forward, normalVector); //Quaternion.LookRotation(forward, up) returns a transform that has the up facing the up value and the forward facing the forward value, the character is being set to look forward and its up vector to be aligned
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normalVector), spinSpeed); //Rotates the transform towards the which Quaternion.LookRotation(forward, up) returns a transform that has the up facing the up value and the forward facing the forward value, the character is being set to look forward and its up vector to be aligned
         } else {
-            transform.up = Vector3.up; //makes the transform upwards be global up
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, Vector3.up), spinSpeed); //Rotates the transform to make its upwards be global up
         }
     }
 
