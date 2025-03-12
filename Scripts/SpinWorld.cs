@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpinWorld : MonoBehaviour {
-    [SerializeField] private float spinSpeed;
+    private static float spinSpeed = 1f;
 
     void Start() {
         Cursor.visible = false;
     }
 
-    public void rotateWorld(float spinAmt, Vector3 pivot) {
+    public static void rotateWorld(int direction, Vector3 pivot) {// direction is either 1 or -1
+        float spinAmt = direction * spinSpeed * Time.deltaTime;
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>(); //finds all gameObjects
         foreach (GameObject obj in allObjects) { //loops through all gameObjects
             if (obj.layer != 3 && obj.layer != 5) { //ignores the object if it is layer of "Ignore rotation" or "UI"
