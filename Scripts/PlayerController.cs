@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private bool canFlutter() { //can the player "flutter"
-        return ableToFlutter || inCoyote();
+        return (ableToFlutter || inCoyote()) && inAir; //must be in air to flutter
     }
 
     public int getDirection() { //getDirection method so other classes can read the value
