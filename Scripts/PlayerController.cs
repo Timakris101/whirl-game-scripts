@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
     void OnCollisionStay2D(Collision2D col) { //sets the normal vector to the normal of the ground at the point of contact 
         if (col.gameObject != gameObject && col.gameObject.tag.Equals("Surface")) {
             ground = col.gameObject;
-            normalVector = col.contacts[col.contacts.Length - 1].normal;
+            normalVector = col.contacts[0].normal;
             startCoyoteTime = false;
             coyoteTime = 0;
             inAir = false;
