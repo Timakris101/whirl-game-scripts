@@ -15,7 +15,7 @@ public class Health : MonoBehaviour {
             if (transform.tag != "Player") {
                 Destroy(gameObject);
             } else {
-                //TODO:
+                //TODO: player kill
             }
         }
     }
