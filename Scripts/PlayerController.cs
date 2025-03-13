@@ -16,7 +16,10 @@ public class PlayerController : MonoBehaviour {
     private bool inAir; //is the player in the air
     [SerializeField] private int direction = 1; //which way is the player facing
     private float undirectedlocalScaleX; //place to save the local scale of the x even while it is rotated
-    [SerializeField] private float spinSpeed; //how fast the player rotates towards the alignment vector
+    [SerializeField] private float playerSpinSpeed; //how fast the player rotates towards the alignment vector
+    [SerializeField] private float worldSpinSpeed; //spins world at speed
+    [SerializeField] private GameObject grabbedObj;
+
 
     void OnCollisionStay2D(Collision2D col) { //sets the normal vector to the normal of the ground at the point of contact 
         if (col.gameObject != gameObject && col.gameObject.tag.Equals("Surface")) {
@@ -48,17 +51,41 @@ public class PlayerController : MonoBehaviour {
         stickToWall();
         handleTurning();
         handleWorldRotation();
+        handleGrabbing();
+    }
+
+    void handleGrabbing() {
+        Transform grabArea = transform.Find("GrabArea");
+        if (Input.GetMouseButtonDown(0)) {
+            if (grabbedObj == null) { //grabs obj
+                Collider2D col = Physics2D.OverlapCircle((Vector2) grabArea.position, 0.01f);
+                if (col != null) {
+                    if (col.transform != grabArea) {
+                        if (col.transform.tag != "Surface" && col.transform.tag != "Bullet" && col.gameObject != gameObject) {
+                            grabbedObj = col.gameObject;
+                        }
+                    }
+                }
+            } else { //ungrabs obj
+                grabbedObj = null;
+            }
+        }
+        if (grabbedObj != null) { //moves grabbed obj to position and rotation
+            grabbedObj.transform.localScale = new Vector3(direction, 1, 1);
+            grabbedObj.transform.eulerAngles = grabArea.eulerAngles;
+            grabbedObj.transform.position = grabArea.position;
+        }
     }
 
     void handleWorldRotation() {
         ParticleSystem reactor = GetComponent<ParticleSystem>(); //particle system that plays "reactor" effect
         bool worldRotating = false; //checks if there is need to ook at particlesystem
         if (Input.GetKey("q")) { //if q spin counter-clockwise around player
-            SpinWorld.rotateWorld(-1, transform.position);
+            SpinWorld.rotateWorld(-1 * worldSpinSpeed * Time.deltaTime, transform.position);
             worldRotating = !worldRotating; //if input on only one of the keys then we want to look at particlesystem
         }
         if (Input.GetKey("e")) { //if e spin clockwise around player
-            SpinWorld.rotateWorld(1, transform.position);
+            SpinWorld.rotateWorld(1 * worldSpinSpeed * Time.deltaTime, transform.position);
             worldRotating = !worldRotating; //if input on only one of the keys then we want to look at particlesystem
         }
         if (worldRotating) { //if input then we want to look at particlesystem
@@ -130,9 +157,9 @@ public class PlayerController : MonoBehaviour {
 
     void alignToWall() { // if contact with the ground the player aligns to the normal vector of the collision point, else aligns to nothing
         if (ground != null) {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normalVector), spinSpeed); //Rotates the transform towards the which Quaternion.LookRotation(forward, up) returns a transform that has the up facing the up value and the forward facing the forward value, the character is being set to look forward and its up vector to be aligned
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normalVector), playerSpinSpeed); //Rotates the transform towards the which Quaternion.LookRotation(forward, up) returns a transform that has the up facing the up value and the forward facing the forward value, the character is being set to look forward and its up vector to be aligned
         } else {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, Vector3.up), spinSpeed); //Rotates the transform to make its upwards be global up
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, Vector3.up), playerSpinSpeed); //Rotates the transform to make its upwards be global up
         }
     }
 

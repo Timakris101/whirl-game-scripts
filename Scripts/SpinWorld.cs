@@ -9,8 +9,7 @@ public class SpinWorld : MonoBehaviour {
         Cursor.visible = false;
     }
 
-    public static void rotateWorld(int direction, Vector3 pivot) {// direction is either 1 or -1
-        float spinAmt = direction * spinSpeed * Time.deltaTime;
+    public static void rotateWorld(float spinAmt, Vector3 pivot) {
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>(); //finds all gameObjects
         foreach (GameObject obj in allObjects) { //loops through all gameObjects
             if (obj.layer != 3 && obj.layer != 5) { //ignores the object if it is layer of "Ignore rotation" or "UI"

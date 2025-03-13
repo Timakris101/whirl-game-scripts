@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletScript : MonoBehaviour {
-
-    private string bulletType;
-    private float bulletInitSpeed = 10;
-    private float lifetime = 10;
-    private float timer = 0;
-    private float damage = 1;
+    [SerializeField] private float bulletInitSpeed = 10;
+    [SerializeField] private float lifetime = 10;
+    [SerializeField] private float timer = 0;
+    [SerializeField] private float damage = 1;
 
     void OnCollisionEnter2D(Collision2D col) { //if bullet hits object damage object
         if (col.gameObject.GetComponent<Health>() != null) {
