@@ -18,6 +18,6 @@ public class TurretEnemyLogic : MonoBehaviour {
 
     void spawnBullet() {
         GameObject newBullet = Instantiate(bullet, transform.position + transform.right * transform.localScale.x, transform.rotation); //makes a new bullet at the gun launcher area
-        newBullet.GetComponent<Rigidbody2D>().velocity = (Vector2) transform.right * transform.localScale.x * newBullet.GetComponent<BulletScript>().getBulletInitSpeed(); //adds proper speed to the bullet
+        newBullet.GetComponent<Rigidbody2D>().velocity = (Vector2) transform.right * transform.localScale.x * newBullet.GetComponent<BulletScript>().getBulletInitSpeed() + GetComponent<Rigidbody2D>().velocity; //adds proper speed to the bullet
     }
 }
