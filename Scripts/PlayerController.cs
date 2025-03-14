@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private int speed; //speed
     [SerializeField] private int wallStickiness; //force attracting to wall
     [SerializeField] private int jumpForce; //jump force
+    [SerializeField] private float throwForce;
     private Vector3 normalVector; //vector of normal of contact point
     private bool ableToFlutter; //can the player flutter if not in coyote
     [SerializeField] private int flutterCoef; //how effective is the flutter
@@ -67,6 +68,7 @@ public class PlayerController : MonoBehaviour {
                     }
                 }
             } else { //ungrabs obj
+                grabbedObj.GetComponent<Rigidbody2D>().velocity = transform.right * direction * throwForce;
                 grabbedObj = null;
             }
         }
