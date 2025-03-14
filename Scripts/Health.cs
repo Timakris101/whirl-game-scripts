@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour {
     [SerializeField] private float maxHealth;
@@ -15,7 +16,7 @@ public class Health : MonoBehaviour {
             if (transform.tag != "Player") {
                 Destroy(gameObject);
             } else {
-                //TODO: player kill
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
     }
