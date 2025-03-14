@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour {
                     }
                 }
             } else { //ungrabs obj
-                grabbedObj.GetComponent<Rigidbody2D>().velocity += transform.right * direction * throwForce;
+                grabbedObj.GetComponent<Rigidbody2D>().velocity += (Vector2) transform.right * direction * throwForce;
                 grabbedObj = null;
             }
         }
