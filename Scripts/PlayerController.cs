@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour {
                 Collider2D col = Physics2D.OverlapCircle((Vector2) grabArea.position, 0.01f);
                 if (col != null) {
                     if (col.transform != grabArea) {
-                        if (col.transform.tag != "Surface" && col.transform.tag != "Bullet" && col.gameObject != gameObject) {
+                        if (col.transform.tag != "Surface" && col.transform.tag != "Bullet" && col.transform.tag != "Enemy" && col.gameObject != gameObject) {
                             grabbedObj = col.gameObject;
                         }
                     }
