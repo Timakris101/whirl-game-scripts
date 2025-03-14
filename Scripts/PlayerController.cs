@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour {
                 Collider2D col = Physics2D.OverlapCircle((Vector2) grabArea.position, 0.01f);
                 if (col != null) {
                     if (col.transform != grabArea) {
-                        if (col.transform.tag != "Surface" && col.transform.tag != "Bullet" && col.transform.tag != "Enemy" && col.gameObject != gameObject) {
+                        if (col.transform.tag != "Surface" && col.transform.tag != "Bullet" && col.gameObject != gameObject) {
                             grabbedObj = col.gameObject;
                         }
                     }
@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour {
             grabbedObj.transform.localScale = new Vector3(direction, 1, 1);
             grabbedObj.transform.eulerAngles = grabArea.eulerAngles;
             grabbedObj.transform.position = grabArea.position;
+            grabbedObj.GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity;
         }
     }
 
