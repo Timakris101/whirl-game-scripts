@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float playerSpinSpeed; //how fast the player rotates towards the alignment vector
     [SerializeField] private float worldSpinSpeed; //spins world at speed
     [SerializeField] private GameObject grabbedObj;
+    private Vector3 grabbedObjUndisturbedScale;
 
 
     void OnCollisionStay2D(Collision2D col) { //sets the normal vector to the normal of the ground at the point of contact 
@@ -63,6 +64,7 @@ public class PlayerController : MonoBehaviour {
                     if (col.transform != grabArea) {
                         if (col.transform.tag != "Surface" && col.transform.tag != "Bullet" && col.gameObject != gameObject) {
                             grabbedObj = col.gameObject;
+                            grabbedObjUndisturbedScale = col.transform.localScale;
                         }
                     }
                 }
@@ -71,7 +73,7 @@ public class PlayerController : MonoBehaviour {
             }
         }
         if (grabbedObj != null) { //moves grabbed obj to position and rotation
-            grabbedObj.transform.localScale = new Vector3(direction, 1, 1);
+            grabbedObj.transform.localScale = new Vector3(direction * grabbedObjUndisturbedScale.x, grabbedObjUndisturbedScale.y, grabbedObjUndisturbedScale.z);
             grabbedObj.transform.eulerAngles = grabArea.eulerAngles;
             grabbedObj.transform.position = grabArea.position;
             grabbedObj.GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity;
