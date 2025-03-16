@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour {
             } else { //ungrabs obj
                 grabbedObj = null;
             }
-        } else if (grabbedObj == null && canGrab) {
+        } else if (grabbedObj == null && canGrab) { //displays proper text
             transform.Find("GrabAreaCanvas").Find("PickupText").gameObject.GetComponent<TMP_Text>().text = "Left click to grab";
         } else {
             transform.Find("GrabAreaCanvas").Find("PickupText").gameObject.GetComponent<TMP_Text>().text = "";

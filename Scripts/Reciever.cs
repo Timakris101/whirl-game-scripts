@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserRecieverScript : MonoBehaviour {
+public class RecieverScript : MonoBehaviour {
     [SerializeField] private GameObject doorConnected;
     [SerializeField] private List<GameObject> wiresConnected;
     [SerializeField] private int timeActive;

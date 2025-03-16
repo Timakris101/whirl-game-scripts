@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UiGravDisp : MonoBehaviour {
+public class UiDisp : MonoBehaviour {
     private Vector3 localPos;
     [SerializeField] private bool rotIsLocal;
     [SerializeField] private float scale;
