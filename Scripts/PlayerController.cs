@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour {
     [SerializeField] private GameObject ground; //ground object
@@ -18,7 +19,8 @@ public class PlayerController : MonoBehaviour {
     private float undirectedlocalScaleX; //place to save the local scale of the x even while it is rotated
     [SerializeField] private float playerSpinSpeed; //how fast the player rotates towards the alignment vector
     [SerializeField] private float worldSpinSpeed; //spins world at speed
-    [SerializeField] private GameObject grabbedObj;
+    private GameObject grabbedObj;
+    [SerializeField] private float grabRad;
     private Vector3 grabbedObjUndisturbedScale;
 
 
@@ -56,21 +58,30 @@ public class PlayerController : MonoBehaviour {
     }
 
     void handleGrabbing() {
+        bool canGrab = false;
+        int whichCanGrabIndex = -1;
         Transform grabArea = transform.Find("GrabArea");
-        if (Input.GetMouseButtonDown(0)) {
-            if (grabbedObj == null) { //grabs obj
-                Collider2D col = Physics2D.OverlapCircle((Vector2) grabArea.position, 0.1f);
-                if (col != null) {
-                    if (col.transform != grabArea) {
-                        if (col.transform.tag != "Surface" && col.transform.tag != "Bullet" && col.gameObject != gameObject) {
-                            grabbedObj = col.gameObject;
-                            grabbedObjUndisturbedScale = col.transform.localScale;
-                        }
-                    }
+        Collider2D[] cols = Physics2D.OverlapCircleAll((Vector2) grabArea.position, grabRad);
+        for (int i = 0; i < cols.Length; i++) { //checks all objects around area and selects the grabbable one
+            if (cols[i] != null) {
+                if (cols[i].transform != grabArea && cols[i].transform.tag != "Surface" && cols[i].transform.tag != "Bullet" && cols[i].gameObject != gameObject) { //checks for grabbability
+                    canGrab = true;
+                    whichCanGrabIndex = i;
+                    break;
                 }
+            }
+        }
+        if (Input.GetMouseButtonDown(0)) {
+            if (grabbedObj == null && canGrab) { //grabs obj
+                grabbedObj = cols[whichCanGrabIndex].gameObject;
+                grabbedObjUndisturbedScale = cols[whichCanGrabIndex].transform.localScale;
             } else { //ungrabs obj
                 grabbedObj = null;
             }
+        } else if (grabbedObj == null && canGrab) {
+            transform.Find("GrabAreaCanvas").Find("PickupText").gameObject.GetComponent<TMP_Text>().text = "Right click to grab";
+        } else {
+            transform.Find("GrabAreaCanvas").Find("PickupText").gameObject.GetComponent<TMP_Text>().text = "";
         }
         if (grabbedObj != null) { //moves grabbed obj to position and rotation
             grabbedObj.transform.localScale = new Vector3(direction * grabbedObjUndisturbedScale.x, grabbedObjUndisturbedScale.y, grabbedObjUndisturbedScale.z);
