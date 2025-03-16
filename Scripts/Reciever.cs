@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LaserRecieverScript : MonoBehaviour {
     [SerializeField] private GameObject doorConnected;
+    [SerializeField] private GameObject wireConnected;
     [SerializeField] private int timeActive;
     [SerializeField] private int time;
 
@@ -18,10 +19,12 @@ public class LaserRecieverScript : MonoBehaviour {
 
     public void setActive() {
         doorConnected.GetComponent<DoorScript>().open();
+        wireConnected.GetComponent<WireScript>().light();
         timeActive++;
     }
 
     public void setInactive() {
         doorConnected.GetComponent<DoorScript>().close();
+        wireConnected.GetComponent<WireScript>().unLight();
     }
 }
