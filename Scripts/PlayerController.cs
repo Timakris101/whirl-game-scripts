@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour {
         Collider2D[] cols = Physics2D.OverlapCircleAll((Vector2) grabArea.position, grabRad);
         for (int i = 0; i < cols.Length; i++) { //checks all objects around area and selects the grabbable one
             if (cols[i] != null) {
-                if (cols[i].transform != grabArea && cols[i].transform.tag != "Surface" && cols[i].transform.tag != "Bullet" && cols[i].gameObject != gameObject) { //checks for grabbability
+                if (cols[i].transform != grabArea && cols[i].transform.tag != "Surface"  && cols[i].transform.tag != "Enemy" && cols[i].transform.tag != "Bullet" && cols[i].gameObject != gameObject) { //checks for grabbability
                     canGrab = true;
                     whichCanGrabIndex = i;
                     break;
