@@ -26,5 +26,10 @@ public class CameraZoom : MonoBehaviour {
                 camera.fieldOfView = minP;
             }
         }
+        if (Input.GetKey("c")) { //if c is pressed it makes the camera face the global down and if not the local down of the object it is attached to
+            transform.eulerAngles = new Vector3(0, 0, 0);
+        } else {
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+        }
     }
 }
