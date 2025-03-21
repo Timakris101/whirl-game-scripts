@@ -12,7 +12,7 @@ public class SpinWorld : MonoBehaviour {
     public static void rotateWorld(float spinAmt, Vector3 pivot) {
         GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>(); //finds all gameObjects
         foreach (GameObject obj in allObjects) { //loops through all gameObjects
-            if (obj.layer != 3 && obj.layer != 5) { //ignores the object if it is layer of "Ignore rotation" or "UI"
+            if (obj.transform.parent == null && obj.layer != 3 && obj.layer != 5) { //ignores the object if it is layer of "Ignore rotation" or "UI" or if it has a parent
                 float relativeX = obj.transform.position.x - pivot.x; //gets the position of the object relative to the pivot
                 float relativeY = obj.transform.position.y - pivot.y;
                 float newRelativeX = relativeX * Mathf.Cos(spinAmt) - relativeY * Mathf.Sin(spinAmt); //uses rotation matrices to rotate the world
