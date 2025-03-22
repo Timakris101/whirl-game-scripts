@@ -157,7 +157,6 @@ public class PlayerController : MonoBehaviour {
             ground = null; //make sure it knows it is no longer on the ground
             coyoteTime = 0;  //if you jump you are no longer in coyote time
             startCoyoteTime = false;
-            transform.Find("JumpEffectArea").GetComponent<ParticleSystem>().Play(false); //if jump play jump particle effect
         }
     }
 
