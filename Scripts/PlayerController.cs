@@ -170,9 +170,9 @@ public class PlayerController : MonoBehaviour {
 
     void alignToWall() { // if contact with the ground the player aligns to the normal vector of the collision point, else aligns to nothing
         if (ground != null) {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normalVector), playerSpinSpeed); //Rotates the transform towards the which Quaternion.LookRotation(forward, up) returns a transform that has the up facing the up value and the forward facing the forward value, the character is being set to look forward and its up vector to be aligned
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normalVector), playerSpinSpeed * Time.deltaTime); //Rotates the transform towards the which Quaternion.LookRotation(forward, up) returns a transform that has the up facing the up value and the forward facing the forward value, the character is being set to look forward and its up vector to be aligned
         } else {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, Vector3.up), playerSpinSpeed); //Rotates the transform to make its upwards be global up
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, Vector3.up), playerSpinSpeed * Time.deltaTime); //Rotates the transform to make its upwards be global up
         }
     }
 
