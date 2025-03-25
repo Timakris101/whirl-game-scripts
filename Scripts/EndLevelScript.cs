@@ -26,6 +26,7 @@ public class EndLevelScript : MonoBehaviour {
 
     void Update() {
         if (endLevel) {
+            player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             player.transform.position += (transform.position - player.transform.position) * Time.deltaTime;
             electricityCircle.transform.position += (endWire.transform.position - transform.position) * Time.deltaTime;
             if (!electricityCircle.GetComponent<ParticleSystem>().isPlaying) electricityCircle.GetComponent<ParticleSystem>().Play();
