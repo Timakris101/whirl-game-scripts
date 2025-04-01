@@ -9,12 +9,17 @@ public class EndLevelScript : MonoBehaviour {
     private GameObject endWire;
     [SerializeField] private GameObject player;
     private bool endLevel = false;
+    private float delay = 1f;
+    private float timer;
+    private Vector3 whereStop;
+
 
     void OnTriggerEnter2D(Collider2D col) {
         if (col.transform.tag == "Player") {
             endLevel = true;
             player = col.transform.gameObject;
             col.transform.gameObject.GetComponent<PlayerController>().enabled = false;
+            whereStop = player.transform.position;
         }
     }
 
@@ -26,14 +31,14 @@ public class EndLevelScript : MonoBehaviour {
 
     void Update() {
         if (endLevel) {
-            if (Vector3.Distance(player.transform.position, transform.position) < 1.25f) {
+            timer += Time.deltaTime;
+            player.transform.position = whereStop;
+            player.GetComponent<SpriteRenderer>().enabled = false;
+            player.GetComponent<ParticleSystem>().Stop();
+            if (timer > delay) {
                 if (!(Vector3.Distance(electricityCircle.transform.position, endWire.transform.position) < .1f)) electricityCircle.transform.position += (endWire.transform.position - transform.position) * Time.deltaTime;
                 if (!electricityCircle.GetComponent<ParticleSystem>().isPlaying) electricityCircle.GetComponent<ParticleSystem>().Play();
                 if (Vector3.Distance(electricityCircle.transform.position, endWire.transform.position) < .1f) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            } else {
-                player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-                player.transform.position += (transform.position - player.transform.position) * Time.deltaTime;
-                player.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, 1f);
             }
         }
     }
