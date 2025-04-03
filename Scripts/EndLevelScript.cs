@@ -7,9 +7,9 @@ public class EndLevelScript : MonoBehaviour {
     private GameObject electricityCircle;
     private GameObject wireOutwards;
     private GameObject endWire;
-    [SerializeField] private GameObject player;
+    private GameObject player;
     private bool endLevel = false;
-    private float delay = 1f;
+    [SerializeField] private float delay = 1f;
     private float timer;
     private Vector3 whereStop;
 
