@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour {
 
 
     void OnCollisionStay2D(Collision2D col) { //sets the normal vector to the normal of the ground at the point of contact 
-        if (col.gameObject != gameObject && col.gameObject.tag.Equals("Surface")) {
+        if (col.gameObject != gameObject) {
             ground = col.gameObject;
             normalVector = col.contacts[0].normal;
             startCoyoteTime = false;
@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void OnCollisionExit2D(Collision2D col) { //sets ground to null and allows coyote time
-        if (col.gameObject != gameObject && col.gameObject.tag.Equals("Surface")) {
+        if (col.gameObject != gameObject) {
             ground = null;
             startCoyoteTime = true;
             coyoteTime = 0;
