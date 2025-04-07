@@ -87,7 +87,11 @@ public class PlayerController : MonoBehaviour {
             grabbedObj.transform.localScale = new Vector3(direction * grabbedObjUndisturbedScale.x, grabbedObjUndisturbedScale.y, grabbedObjUndisturbedScale.z);
             grabbedObj.transform.eulerAngles = grabArea.eulerAngles;
             grabbedObj.transform.position = grabArea.position;
-            grabbedObj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            if (ground != null) {
+                grabbedObj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            } else {
+                grabbedObj.GetComponent<Rigidbody2D>().velocity = gameObject.GetComponent<Rigidbody2D>().velocity;
+            }
         }
     }
 
