@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour {
         if (ground != null) {
             removeGrav();
             if (ground.GetComponent<Rigidbody2D>() != null) {
-                gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().velocity.magnitude == 0f ? -normalVector * wallStickiness * Time.deltaTime : ground.GetComponent<Rigidbody2D>().velocity;
+                gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().velocity.magnitude == 0f ? -normalVector * wallStickiness * Time.deltaTime : ground.GetComponent<Rigidbody2D>().velocity; //only makes velocity towards wall if the wall is not moving
             } else {
                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             }
