@@ -6,7 +6,6 @@ using TMPro;
 public class PlayerController : MonoBehaviour {
     [SerializeField] private GameObject ground; //ground object
     [SerializeField] private int speed; //speed
-    [SerializeField] private int wallStickiness; //force attracting to wall
     [SerializeField] private int jumpForce; //jump force
     private Vector3 normalVector; //vector of normal of contact point
     private bool ableToFlutter; //can the player flutter if not in coyote
@@ -51,7 +50,6 @@ public class PlayerController : MonoBehaviour {
         handleMovement();
         handleJumping();
         alignToWall();
-        stickToWall();
         handleTurning();
         handleWorldRotation();
         handleGrabbing();
@@ -64,7 +62,7 @@ public class PlayerController : MonoBehaviour {
         Collider2D[] cols = Physics2D.OverlapCircleAll((Vector2) grabArea.position, grabRad);
         for (int i = 0; i < cols.Length; i++) { //checks all objects around area and selects the grabbable one
             if (cols[i] != null) {
-                if (cols[i].transform != grabArea && cols[i].transform.tag != "Surface"  && cols[i].transform.tag != "Enemy" && cols[i].transform.tag != "Bullet" && cols[i].gameObject != gameObject) { //checks for grabbability
+                if (cols[i].transform != grabArea && cols[i].transform.tag != "Ungrabbable" && cols[i].gameObject != gameObject) { //checks for grabbability
                     canGrab = true;
                     whichCanGrabIndex = i;
                     break;
@@ -173,17 +171,6 @@ public class PlayerController : MonoBehaviour {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normalVector), playerSpinSpeed * Time.deltaTime); //Rotates the transform towards the which Quaternion.LookRotation(forward, up) returns a transform that has the up facing the up value and the forward facing the forward value, the character is being set to look forward and its up vector to be aligned
         } else {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, Vector3.up), playerSpinSpeed * Time.deltaTime); //Rotates the transform to make its upwards be global up
-        }
-    }
-
-    void stickToWall() { //makes velocity go towards the wall if it is in contact with it and removes inbuilt gravity until there is neither coyote time or ground contact
-        if (canJump()) {
-            removeGrav();
-            if (ground != null) {
-                GetComponent<Rigidbody2D>().velocity = normalVector * -wallStickiness * Time.deltaTime;
-            }
-        } else {
-            addGrav();
         }
     }
 
