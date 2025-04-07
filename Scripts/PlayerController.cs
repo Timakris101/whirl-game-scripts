@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour {
             grabbedObj.transform.localScale = new Vector3(direction * grabbedObjUndisturbedScale.x, grabbedObjUndisturbedScale.y, grabbedObjUndisturbedScale.z);
             grabbedObj.transform.eulerAngles = grabArea.eulerAngles;
             grabbedObj.transform.position = grabArea.position;
-            grabbedObj.GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity;
+            grabbedObj.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         }
     }
 
@@ -179,7 +179,11 @@ public class PlayerController : MonoBehaviour {
     void stickToWall() { //makes velocity go towards the wall if it is in contact with it and removes inbuilt gravity until there is neither coyote time or ground contact
         if (ground != null) {
             removeGrav();
-            gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().velocity.magnitude == 0f ? -normalVector * wallStickiness * Time.deltaTime : ground.GetComponent<Rigidbody2D>().velocity;
+            if (ground.GetComponent<Rigidbody2D>() != null) {
+                gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().velocity.magnitude == 0f ? -normalVector * wallStickiness * Time.deltaTime : ground.GetComponent<Rigidbody2D>().velocity;
+            } else {
+                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            }
         } else {
             addGrav();
         }
