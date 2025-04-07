@@ -5,16 +5,16 @@ using UnityEngine;
 public class PressurePlateScript : MonoBehaviour {
     [SerializeField] private bool on;
 
+    void OnCollisionEnter2D(Collision2D col) {
+        on = true;
+    }
+
     void OnCollisionStay2D(Collision2D col) {
-        if (col.transform.tag != "Surface") {
-            on = true;
-        }
+        on = true;
     }
 
     void OnCollisionExit2D(Collision2D col) {
-        if (col.transform.tag != "Surface") {
-            on = false;
-        }
+        on = false;
     }
 
     void Update() {
