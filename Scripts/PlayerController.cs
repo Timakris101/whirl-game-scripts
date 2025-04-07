@@ -95,11 +95,11 @@ public class PlayerController : MonoBehaviour {
         ParticleSystem reactor = GetComponent<ParticleSystem>(); //particle system that plays "reactor" effect
         bool worldRotating = false; //checks if there is need to ook at particlesystem
         if (Input.GetKey("q")) { //if q spin counter-clockwise around player
-            SpinWorld.rotateWorld(-1 * worldSpinSpeed * Time.deltaTime, transform.position);
+            SpinWorld.rotateWorld(1 * worldSpinSpeed * Time.deltaTime, transform.position);
             worldRotating = !worldRotating; //if input on only one of the keys then we want to look at particlesystem
         }
         if (Input.GetKey("e")) { //if e spin clockwise around player
-            SpinWorld.rotateWorld(1 * worldSpinSpeed * Time.deltaTime, transform.position);
+            SpinWorld.rotateWorld(-1 * worldSpinSpeed * Time.deltaTime, transform.position);
             worldRotating = !worldRotating; //if input on only one of the keys then we want to look at particlesystem
         }
         if (worldRotating) { //if input then we want to look at particlesystem
