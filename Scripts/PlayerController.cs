@@ -78,10 +78,6 @@ public class PlayerController : MonoBehaviour {
             } else { //ungrabs obj
                 grabbedObj = null;
             }
-        } else if (grabbedObj == null && canGrab) { //displays proper text
-            transform.Find("GrabAreaCanvas").Find("PickupText").gameObject.GetComponent<TMP_Text>().text = "Left click to grab";
-        } else {
-            transform.Find("GrabAreaCanvas").Find("PickupText").gameObject.GetComponent<TMP_Text>().text = "";
         }
         if (grabbedObj != null) { //moves grabbed obj to position and rotation
             grabbedObj.transform.localScale = new Vector3(direction * grabbedObjUndisturbedScale.x, grabbedObjUndisturbedScale.y, grabbedObjUndisturbedScale.z);
@@ -186,7 +182,7 @@ public class PlayerController : MonoBehaviour {
             if (ground.GetComponent<Rigidbody2D>() != null) {
                 gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().velocity.magnitude == 0f ? -normalVector * wallStickiness * Time.deltaTime : ground.GetComponent<Rigidbody2D>().velocity; //only makes velocity towards wall if the wall is not moving
             } else {
-                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+                gameObject.GetComponent<Rigidbody2D>().velocity = -normalVector * wallStickiness * Time.deltaTime;
             }
         } else {
             addGrav();
