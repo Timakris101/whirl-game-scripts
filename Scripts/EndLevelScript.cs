@@ -33,7 +33,6 @@ public class EndLevelScript : MonoBehaviour {
         if (endLevel) {
             timer += Time.deltaTime;
             player.transform.position = whereStop;
-            player.transform.Find("GrabAreaCanvas").gameObject.GetComponent<Canvas>().enabled = false;
             player.GetComponent<CircleCollider2D>().enabled = false;
             player.GetComponent<SpriteRenderer>().enabled = false;
             player.GetComponent<ParticleSystem>().Stop();
