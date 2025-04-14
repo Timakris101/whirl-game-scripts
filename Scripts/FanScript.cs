@@ -13,6 +13,6 @@ public class FanScript : MonoBehaviour {
     }
 
     void OnTriggerStay2D(Collider2D col) {
-        if (col.transform.tag != "Surface" && col.transform.tag != "Ungrabbable") col.gameObject.GetComponent<Rigidbody2D>().velocity += (Vector2) transform.up * strength * Time.deltaTime;
+        if (col.transform.tag != "Surface" && col.transform.tag != "Ungrabbable") col.gameObject.GetComponent<Rigidbody2D>().AddForce(transform.up * strength * Time.deltaTime, ForceMode2D.Impulse);
     }
 }
