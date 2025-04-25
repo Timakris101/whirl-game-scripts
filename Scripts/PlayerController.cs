@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviour {
     private GameObject grabbedObj;
     [SerializeField] private float grabRad;
     private Vector3 grabbedObjUndisturbedScale;
-    private float velDampingFactor = .95f;
 
 
     void OnCollisionStay2D(Collision2D col) { //sets the normal vector to the normal of the ground at the point of contact 
@@ -130,7 +129,7 @@ public class PlayerController : MonoBehaviour {
             direction = -1; //makes the player face left
         }
         if (moved) {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * velDampingFactor, GetComponent<Rigidbody2D>().velocity.y); //sets x speed lower so it doesn’t keep its speed and move improperly
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y); //sets x speed lower so it doesn’t keep its speed and move improperly
             if (GetComponent<Animator>().speed == 0) {//makes the animation for the player play, if only a or d
                 GetComponent<Animator>().speed = 1;  
             } else {
