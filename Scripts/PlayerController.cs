@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour {
             coyoteTime += Time.deltaTime;
         }
         if (Input.GetKeyDown("w") && canJump() && (!inAir || inCoyote())) { //if player can jump then they jump
-            GetComponent<Rigidbody2D>().velocity = (Vector2) normalVector * jumpForce; //sets velocity in the “up” direction
+            GetComponent<Rigidbody2D>().velocity += (Vector2) normalVector * jumpForce; //sets velocity in the “up” direction
             transform.position += (Vector3) GetComponent<Rigidbody2D>().velocity * Time.deltaTime; //moves the player off of the ground to prevent double jump bugs because the code could read that it is still on the ground when it shouldn't be
             ableToFlutter = true; //makes player able to flutter
             ground = null; //make sure it knows it is no longer on the ground
