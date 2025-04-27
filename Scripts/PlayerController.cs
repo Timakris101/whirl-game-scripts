@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float grabRad;
     private Vector3 grabbedObjUndisturbedScale;
 
+    [SerializeField] private bool defectiveTracks;
+
 
     void OnCollisionStay2D(Collision2D col) { //sets the normal vector to the normal of the ground at the point of contact 
         if (col.gameObject != gameObject) {
@@ -48,7 +50,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        handleMovement();
+        if (!defectiveTracks) {
+            handleMovement();
+        } else {
+            GetComponent<Animator>().speed = 0; //no track mvmnt
+        }
         handleJumping();
         alignToWall();
         stickToWall();
