@@ -7,8 +7,14 @@ public class CameraZoom : MonoBehaviour {
     [SerializeField] private int maxO = 100; //max for ortho
     [SerializeField] private int minP = 10; //min for perspective
     [SerializeField] private int maxP = 90; //max for perspective
+
+    void Start() {
+        Camera.main.fieldOfView = PlayerPrefs.GetFloat("fov"); //makes the fov at start of scene how it was before
+    }
+
     void Update() {
         Camera camera = gameObject.GetComponent<Camera>();
+        PlayerPrefs.SetFloat("fov", camera.fieldOfView); //saves camera zoom in playerpref
         if (camera.orthographic) {
             camera.orthographicSize -= Input.mouseScrollDelta.y; //adds mouse scroll to cam size
             if (camera.orthographicSize > maxO) { //makes cam size unable to go above max
