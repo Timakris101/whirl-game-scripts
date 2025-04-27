@@ -19,6 +19,7 @@ public class Health : MonoBehaviour {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
+        if (transform.y < -1000) health = 0; //kills player if they are too low
     }
 
     public void removeHealth(float amt) {
