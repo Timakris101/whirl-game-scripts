@@ -175,7 +175,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     void handleAlignment() { // if contact with the ground the player aligns to the normal vector of the collision point, else aligns to nothing
-        GetComponent<Rigidbody2D>().angularVelocity = 0;
+        if (ground != null && ground.GetComponent<Rigidbody2D>() != null) {
+            GetComponent<Rigidbody2D>().angularVelocity = ground.GetComponent<Rigidbody2D>().angularVelocity;
+        } else {
+            GetComponent<Rigidbody2D>().angularVelocity = 0;
+        }
         if (ground != null) {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normalVector), playerSpinSpeed * Time.deltaTime); //Rotates the transform towards the which Quaternion.LookRotation(forward, up) returns a transform that has the up facing the up value and the forward facing the forward value, the character is being set to look forward and its up vector to be aligned
         } else {
@@ -188,8 +192,6 @@ public class PlayerController : MonoBehaviour {
             removeGrav();
             if (ground.GetComponent<Rigidbody2D>() != null) {
                 gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().GetPointVelocity(contactPoint);
-                ground.GetComponent<Rigidbody2D>().AddForceAtPosition(normalVector / ground.GetComponent<Rigidbody2D>().mass, contactPoint, ForceMode2D.Force);
-                gameObject.GetComponent<Rigidbody2D>().AddForceAtPosition(-normalVector / GetComponent<Rigidbody2D>().mass, contactPoint, ForceMode2D.Force);
             } else {
                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             }
