@@ -5,17 +5,17 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour {
     [SerializeField] private GameObject ground; //ground object
+    private Vector3 contactPoint;
     [SerializeField] private int speed; //speed
-    [SerializeField] private float wallStickiness; //force attracting to wall
     [SerializeField] private int jumpForce; //jump force
     private Vector3 normalVector; //vector of normal of contact point
     private bool ableToFlutter; //can the player flutter if not in coyote
-    [SerializeField] private int flutterCoef; //how effective is the flutter
+    private int flutterCoef = 70; //how effective is the flutter
     private float coyoteTime; //coyote timer
-    [SerializeField] private float coyoteMax; //coyote max time
+    private float coyoteMax = .1f; //coyote max time
     private bool startCoyoteTime; //is the player in coyote time
     private bool inAir; //is the player in the air
-    [SerializeField] private int direction = 1; //which way is the player facing
+    private int direction = 1; //which way is the player facing
     private float undirectedlocalScaleX; //place to save the local scale of the x even while it is rotated
     [SerializeField] private float playerSpinSpeed; //how fast the player rotates towards the alignment vector
     [SerializeField] private float worldSpinSpeed; //spins world at speed
@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour {
         if (col.gameObject != gameObject) {
             ground = col.gameObject;
             normalVector = col.contacts[0].normal;
+            contactPoint = col.contacts[0].point;
             startCoyoteTime = false;
             coyoteTime = 0;
             inAir = false;
@@ -156,7 +157,7 @@ public class PlayerController : MonoBehaviour {
             coyoteTime += Time.deltaTime;
         }
         if (Input.GetKeyDown("w") && canJump() && (!inAir || inCoyote())) { //if player can jump then they jump
-            GetComponent<Rigidbody2D>().velocity += (Vector2) normalVector * jumpForce; //sets velocity in the “up” direction
+            GetComponent<Rigidbody2D>().velocity += (Vector2) transform.up * jumpForce; //sets velocity in the “up” direction
             transform.position += (Vector3) GetComponent<Rigidbody2D>().velocity * Time.deltaTime; //moves the player off of the ground to prevent double jump bugs because the code could read that it is still on the ground when it shouldn't be
             ableToFlutter = true; //makes player able to flutter
             ground = null; //make sure it knows it is no longer on the ground
@@ -186,9 +187,9 @@ public class PlayerController : MonoBehaviour {
         if (ground != null) {
             removeGrav();
             if (ground.GetComponent<Rigidbody2D>() != null) {
-                gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().velocity.magnitude == 0f ? -normalVector * wallStickiness * Time.deltaTime : ground.GetComponent<Rigidbody2D>().velocity; //only makes velocity towards wall if the wall is not moving
+                gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().GetPointVelocity(contactPoint); //only makes velocity towards wall if the wall is not moving
             } else {
-                gameObject.GetComponent<Rigidbody2D>().velocity = -normalVector * wallStickiness * Time.deltaTime;
+                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             }
         } else {
             addGrav();
