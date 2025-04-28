@@ -187,7 +187,9 @@ public class PlayerController : MonoBehaviour {
         if (ground != null) {
             removeGrav();
             if (ground.GetComponent<Rigidbody2D>() != null) {
-                gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().velocity;
+                gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().GetPointVelocity(contactPoint);
+                ground.GetComponent<Rigidbody2D>().AddForceAtPosition(normalVector / ground.GetComponent<Rigidbody2D>().mass, contactPoint, ForceMode2D.Force);
+                gameObject.GetComponent<Rigidbody2D>().AddForceAtPosition(-normalVector / GetComponent<Rigidbody2D>().mass, contactPoint, ForceMode2D.Force);
             } else {
                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             }
