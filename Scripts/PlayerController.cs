@@ -187,7 +187,7 @@ public class PlayerController : MonoBehaviour {
         if (ground != null) {
             removeGrav();
             if (ground.GetComponent<Rigidbody2D>() != null) {
-                gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().GetPointVelocity(contactPoint); //only makes velocity towards wall if the wall is not moving
+                gameObject.GetComponent<Rigidbody2D>().velocity = ground.GetComponent<Rigidbody2D>().velocity;
             } else {
                 gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             }
