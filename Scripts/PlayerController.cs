@@ -56,8 +56,8 @@ public class PlayerController : MonoBehaviour {
             GetComponent<Animator>().speed = 0; //no track mvmnt
         }
         handleJumping();
-        alignToWall();
-        stickToWall();
+        handleAlignment();
+        handleSticking();
         handleTurning();
         handleWorldRotation();
         handleGrabbing();
@@ -173,7 +173,8 @@ public class PlayerController : MonoBehaviour {
         GetComponent<Rigidbody2D>().gravityScale = 0;
     }
 
-    void alignToWall() { // if contact with the ground the player aligns to the normal vector of the collision point, else aligns to nothing
+    void handleAlignment() { // if contact with the ground the player aligns to the normal vector of the collision point, else aligns to nothing
+        GetComponent<Rigidbody2D>().angularVelocity = 0;
         if (ground != null) {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(transform.forward, normalVector), playerSpinSpeed * Time.deltaTime); //Rotates the transform towards the which Quaternion.LookRotation(forward, up) returns a transform that has the up facing the up value and the forward facing the forward value, the character is being set to look forward and its up vector to be aligned
         } else {
@@ -181,7 +182,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void stickToWall() { //makes velocity go towards the wall if it is in contact with it and removes inbuilt gravity until there is neither coyote time or ground contact
+    void handleSticking() { //makes velocity go towards the wall if it is in contact with it and removes inbuilt gravity until there is neither coyote time or ground contact
         if (ground != null) {
             removeGrav();
             if (ground.GetComponent<Rigidbody2D>() != null) {
