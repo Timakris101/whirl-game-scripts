@@ -15,8 +15,8 @@ public class LaserScript : MonoBehaviour {
         lr.SetPosition(0, transform.position); //sets lr pos
         lr.SetPosition(1, hit ? hit.point : transform.position + transform.right * noHitMaxDist);
         if (hit) {
-            if (hit.transform.gameObject.GetComponent<RecieverScript>() != null) { //makes reciever active
-                hit.transform.gameObject.GetComponent<RecieverScript>().setActive();
+            if (hit.transform.gameObject.GetComponent<LaserReceiverScript>() != null) { //makes reciever active
+                hit.transform.gameObject.GetComponent<LaserReceiverScript>().hitWithLaser();
             }
             if (hit.transform.gameObject.GetComponent<Health>() != null) { //does damage
                 hit.transform.gameObject.GetComponent<Health>().removeHealth(damage);
