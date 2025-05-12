@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour {
     private Vector3 grabbedObjUndisturbedScale;
 
     [SerializeField] private bool defectiveTracks;
+    [SerializeField] private bool defectiveArms;
 
 
     void OnCollisionStay2D(Collision2D col) { //sets the normal vector to the normal of the ground at the point of contact 
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour {
         handleSticking();
         handleTurning();
         handleWorldRotation();
-        handleGrabbing();
+        if (!defectiveArms) handleGrabbing();
     }
 
     void handleGrabbing() {
