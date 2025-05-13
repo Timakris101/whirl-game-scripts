@@ -7,13 +7,18 @@ public class ChuteScript : MonoBehaviour {
     [SerializeField] private float timer;
     [SerializeField] private GameObject thingToSpawn;
     [SerializeField] private float speedToSpawnWith;
+    [SerializeField] private bool on = true;
 
     void Update() {
         timer += Time.deltaTime;
-        if (timer > timeBetweenShots) {
+        if (timer > timeBetweenShots && on) {
             timer = 0;
             shoot();
         }
+    }
+
+    public void turnOff() {
+        on = false;
     }
 
     private void shoot() {
