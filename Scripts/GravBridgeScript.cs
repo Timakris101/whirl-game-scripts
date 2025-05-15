@@ -28,10 +28,8 @@ public class GravBridgeScript : MonoBehaviour {
     private Vector3 positionOfHitInDir(int dir) {
         RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, dir * transform.up); //checks all raycasts in a dir
         foreach(RaycastHit2D hit in hits) {
-            if (hit.transform.gameObject != transform.GetChild(0).gameObject) {
-                if (hit.transform.tag == "Surface") { //if its not a surface dont stop the bridge
-                    return hit.point;
-                }
+            if (hit.transform.tag == "Surface") { //if its not a surface dont stop the bridge
+                return hit.point;
             }
         }
         return transform.position + transform.up * maxDist * dir; //if it hits nothing it goes veeerrryyy far
