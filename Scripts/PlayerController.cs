@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 public class PlayerController : MonoBehaviour {
-    [SerializeField] private GameObject ground; //ground object
+    private GameObject ground; //ground object
     private Vector3 contactPoint;
     [SerializeField] private int speed; //speed
     [SerializeField] private int jumpForce; //jump force
