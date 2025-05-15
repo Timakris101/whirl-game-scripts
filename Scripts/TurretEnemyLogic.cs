@@ -31,7 +31,7 @@ public class TurretEnemyLogic : MonoBehaviour {
         bool playerCanBeHit = false;
         if (playerDetected) {
             LayerMask mask =~ LayerMask.GetMask("Bullet"); //everything but bullets
-            RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * transform.localScale.x, player.transform.position - transform.position, range, mask); //checks if there is something in between it and the player
+            RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * transform.localScale.x * (GetComponent<BoxCollider2D>().size.x / 2 + bullet.GetComponent<CircleCollider2D>().radius * bullet.transform.localScale.x + 0.05f), player.transform.position - transform.position, range, mask); //checks if there is something in between it and the player
             if (hit) playerCanBeHit = hit.transform.gameObject == player;
         }
         if (timer > timeBetweenShots && playerCanBeHit && !overHeated) { //if timer do bullet things
@@ -55,7 +55,7 @@ public class TurretEnemyLogic : MonoBehaviour {
     }
 
     void spawnBullet() {
-        GameObject newBullet = Instantiate(bullet, transform.position + transform.right * transform.localScale.x, transform.rotation); //makes a new bullet at the gun launcher area
+        GameObject newBullet = Instantiate(bullet, transform.position + transform.right * transform.localScale.x * (GetComponent<BoxCollider2D>().size.x / 2 + bullet.GetComponent<CircleCollider2D>().radius * bullet.transform.localScale.x + 0.05f), transform.rotation); //makes a new bullet at the gun launcher area
         newBullet.GetComponent<Rigidbody2D>().velocity = (Vector2) transform.right * transform.localScale.x * newBullet.GetComponent<BulletScript>().getBulletInitSpeed() + gameObject.GetComponent<Rigidbody2D>().velocity + (Vector2) transform.up * Random.Range(-inaccuracy, inaccuracy); //adds proper speed to the bullet
         heat++;
         coolDownTimer = 0;
