@@ -8,7 +8,7 @@ public class DialogueManager : MonoBehaviour {
 
     private Dialogue[] dialogues;
     [SerializeField] private bool startAtStartOfLevel;
-    [SerializeField] private bool useForCutScene;
+    [SerializeField] private bool useForCutscene;
     private int indexConversation = -1;
     private int indexSentence = -1;
     private float indexLetter = -1;
@@ -37,7 +37,7 @@ public class DialogueManager : MonoBehaviour {
     private void endConversation() {
         clear();
         conversationOn = false;
-        if (useForCutScene) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if (useForCutscene) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     private void goToNextDialogue() {
