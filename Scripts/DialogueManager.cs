@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class DialogueManager : MonoBehaviour {
 
     private Dialogue[] dialogues;
     [SerializeField] private bool startAtStartOfLevel;
+    [SerializeField] private bool useForCutScene;
     private int indexConversation = -1;
     private int indexSentence = -1;
     private float indexLetter = -1;
@@ -22,21 +24,20 @@ public class DialogueManager : MonoBehaviour {
         indexConversation = 0;
         indexSentence = 0;
         indexLetter = 0;
-        spriteArea.SetActive(true);
-        continueButton.SetActive(true);
+        transform.GetChild(0).gameObject.SetActive(true);
         conversationOn = true;
     }
 
     private void clear() {
         dialogueTextBox.GetComponent<TextMeshProUGUI>().text = "";
         nameTextBox.GetComponent<TextMeshProUGUI>().text = "";
-        spriteArea.SetActive(false);
-        continueButton.SetActive(false);
+        transform.GetChild(0).gameObject.SetActive(false);
     }
 
     private void endConversation() {
         clear();
         conversationOn = false;
+        if (useForCutScene) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     private void goToNextDialogue() {
@@ -83,10 +84,10 @@ public class DialogueManager : MonoBehaviour {
 
     void Start() {
         dialogues = GetComponents<Dialogue>();
-        dialogueTextBox = transform.GetChild(0).Find("DialogueTextBox").gameObject;
-        nameTextBox = transform.GetChild(0).Find("NameTextBox").gameObject;
-        continueButton = transform.GetChild(0).Find("ContinueButton").gameObject;
-        spriteArea = transform.GetChild(0).Find("SpriteArea").gameObject;
+        dialogueTextBox = transform.GetChild(0).GetChild(0).Find("DialogueTextBox").gameObject;
+        nameTextBox = transform.GetChild(0).GetChild(0).Find("NameTextBox").gameObject;
+        continueButton = transform.GetChild(0).GetChild(0).Find("ContinueButton").gameObject;
+        spriteArea = transform.GetChild(0).GetChild(0).Find("SpriteArea").gameObject;
 
         clear();
         if (startAtStartOfLevel) startConversation();
