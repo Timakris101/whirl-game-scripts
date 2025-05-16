@@ -11,6 +11,7 @@ public class TurretEnemyLogic : MonoBehaviour {
     [SerializeField] private float inaccuracy;
     [SerializeField] private float coolDownTime;
     [SerializeField] private float maxHeat;
+    [SerializeField] private float distOut = .1f;
     private bool overHeated;
     private float heat;
     private float coolDownTimer;
@@ -31,7 +32,7 @@ public class TurretEnemyLogic : MonoBehaviour {
         bool playerCanBeHit = false;
         if (playerDetected) {
             LayerMask mask =~ LayerMask.GetMask("Bullet"); //everything but bullets
-            RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * transform.localScale.x * (GetComponent<BoxCollider2D>().size.x / 2 + bullet.GetComponent<CircleCollider2D>().radius * bullet.transform.localScale.x + 0.05f), player.transform.position - transform.position, range, mask); //checks if there is something in between it and the player
+            RaycastHit2D hit = Physics2D.Raycast(firingPos(), player.transform.position - transform.position, range, mask); //checks if there is something in between it and the player
             if (hit) playerCanBeHit = hit.transform.gameObject == player;
         }
         if (timer > timeBetweenShots && playerCanBeHit && !overHeated) { //if timer do bullet things
@@ -54,8 +55,12 @@ public class TurretEnemyLogic : MonoBehaviour {
         prevPos = (Vector2) transform.position;
     }
 
+    private Vector2 firingPos() {
+        return transform.position + transform.right * transform.localScale.x * (GetComponent<BoxCollider2D>().size.x / 2 + bullet.GetComponent<CircleCollider2D>().radius * bullet.transform.localScale.x + distOut);
+    }
+
     void spawnBullet() {
-        GameObject newBullet = Instantiate(bullet, transform.position + transform.right * transform.localScale.x * (GetComponent<BoxCollider2D>().size.x / 2 + bullet.GetComponent<CircleCollider2D>().radius * bullet.transform.localScale.x + 0.05f), transform.rotation); //makes a new bullet at the gun launcher area
+        GameObject newBullet = Instantiate(bullet, firingPos(), transform.rotation); //makes a new bullet at the gun launcher area
         newBullet.GetComponent<Rigidbody2D>().velocity = (Vector2) transform.right * transform.localScale.x * newBullet.GetComponent<BulletScript>().getBulletInitSpeed() + gameObject.GetComponent<Rigidbody2D>().velocity + (Vector2) transform.up * Random.Range(-inaccuracy, inaccuracy); //adds proper speed to the bullet
         heat++;
         coolDownTimer = 0;
