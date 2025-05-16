@@ -5,34 +5,41 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour {
 
-    [SerializeField] private Dialogue[] dialogues;
-    [SerializeField] private int indexConversation = -1;
-    [SerializeField] private int indexSentence = -1;
-    [SerializeField] private float indexLetter = -1;
-    [SerializeField] private float writingSpeed;
-    [SerializeField] private bool conversationOn;
+    private Dialogue[] dialogues;
+    [SerializeField] private bool startAtStartOfLevel;
+    private int indexConversation = -1;
+    private int indexSentence = -1;
+    private float indexLetter = -1;
+    private float writingSpeed = 7;
+    private bool conversationOn;
 
-    [SerializeField] private GameObject dialogueTextBox;
-    [SerializeField] private GameObject nameTextBox;
-    [SerializeField] private GameObject continueButton;
-    [SerializeField] private GameObject spriteArea;
+    private GameObject dialogueTextBox;
+    private GameObject nameTextBox;
+    private GameObject continueButton;
+    private GameObject spriteArea;
 
     public void startConversation() {
         indexConversation = 0;
         indexSentence = 0;
         indexLetter = 0;
+        spriteArea.SetActive(true);
+        continueButton.SetActive(true);
         conversationOn = true;
     }
 
-    public void endConversation() {
+    private void clear() {
         dialogueTextBox.GetComponent<TextMeshProUGUI>().text = "";
         nameTextBox.GetComponent<TextMeshProUGUI>().text = "";
         spriteArea.SetActive(false);
         continueButton.SetActive(false);
+    }
+
+    private void endConversation() {
+        clear();
         conversationOn = false;
     }
 
-    public void goToNextDialogue() {
+    private void goToNextDialogue() {
         indexConversation++;
         indexSentence = 0;
         indexLetter = 0;
@@ -42,7 +49,7 @@ public class DialogueManager : MonoBehaviour {
         }
     }
 
-    public void goToNextSentence() {
+    private void goToNextSentence() {
         indexSentence++;
         indexLetter = 0;
 
@@ -61,7 +68,7 @@ public class DialogueManager : MonoBehaviour {
         }
     }
 
-    public void dispDialogue() {
+    private void dispDialogue() {
         if (!sentenceComplete()) {
             indexLetter += Time.deltaTime * writingSpeed;
         }
@@ -75,7 +82,14 @@ public class DialogueManager : MonoBehaviour {
     }
 
     void Start() {
-        startConversation();
+        dialogues = GetComponents<Dialogue>();
+        dialogueTextBox = transform.GetChild(0).Find("DialogueTextBox").gameObject;
+        nameTextBox = transform.GetChild(0).Find("NameTextBox").gameObject;
+        continueButton = transform.GetChild(0).Find("ContinueButton").gameObject;
+        spriteArea = transform.GetChild(0).Find("SpriteArea").gameObject;
+
+        clear();
+        if (startAtStartOfLevel) startConversation();
     }
 
     void Update() {
