@@ -12,7 +12,7 @@ public class DialogueManager : MonoBehaviour {
     private int indexConversation = -1;
     private int indexSentence = -1;
     private float indexLetter = -1;
-    private float writingSpeed = 7;
+    [SerializeField] private float writingSpeed = 10;
     private bool conversationOn;
 
     private GameObject dialogueTextBox;
