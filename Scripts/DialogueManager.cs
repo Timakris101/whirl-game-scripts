@@ -44,10 +44,6 @@ public class DialogueManager : MonoBehaviour {
         indexConversation++;
         indexSentence = 0;
         indexLetter = 0;
-
-        if (indexConversation >= dialogues.Length) {
-            endConversation();
-        }
     }
 
     private void goToNextSentence() {
@@ -94,6 +90,7 @@ public class DialogueManager : MonoBehaviour {
     }
 
     void Update() {
+        if (indexConversation == dialogues.Length) endConversation();
         if (conversationOn) dispDialogue();
     }
 }
