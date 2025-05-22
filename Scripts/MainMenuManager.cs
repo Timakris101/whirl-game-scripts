@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour {
     private GameObject continueButton;
@@ -10,7 +11,7 @@ public class MainMenuManager : MonoBehaviour {
     }
 
     void Update() {
-        if (PlayerPrefs.GetInt("maxSceneIndexThisSave") == 0) {
+        if (PlayerPrefs.GetInt("mostRecentSceneIndex") == 0) {
             continueButton.SetActive(false);
         } else {
             continueButton.SetActive(true);

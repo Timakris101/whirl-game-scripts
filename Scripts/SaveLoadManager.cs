@@ -5,18 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class SaveLoadManager : MonoBehaviour {
     public void restart() {
-        PlayerPrefs.SetInt("maxSceneIndexThisSave", 0);
+        PlayerPrefs.SetInt("mostRecentSceneIndex", 0);
         load();
     }
 
     public void load() {
-        SceneManager.LoadScene(PlayerPrefs.GetInt("maxSceneIndexThisSave"));
+        SceneManager.LoadScene(PlayerPrefs.GetInt("mostRecentSceneIndex"));
     }
 
     void Update() {
-        if (SceneManager.GetActiveScene().name != "MainMenu") {
-            if (PlayerPrefs.GetInt("maxSceneIndexThisSave") < SceneManager.GetActiveScene().buildIndex) {
-                PlayerPrefs.SetInt("maxSceneIndexThisSave", SceneManager.GetActiveScene().buildIndex);
+        if (SceneManager.GetActiveScene().name != "MainMenu") { //this makes it so the only way your sceneindex can be at the mainmenu is victory
+            if (PlayerPrefs.GetInt("mostRecentSceneIndex") != SceneManager.GetActiveScene().buildIndex) {
+                PlayerPrefs.SetInt("mostRecentSceneIndex", SceneManager.GetActiveScene().buildIndex);
             } 
         }
     }
