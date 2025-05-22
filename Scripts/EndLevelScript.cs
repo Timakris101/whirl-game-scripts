@@ -39,8 +39,15 @@ public class EndLevelScript : MonoBehaviour {
             if (timer > delay) {
                 if (!(Vector3.Distance(electricityCircle.transform.position, endWire.transform.position) < .1f)) electricityCircle.transform.position += (endWire.transform.position - transform.position) * Time.deltaTime;
                 if (!electricityCircle.GetComponent<ParticleSystem>().isPlaying) electricityCircle.GetComponent<ParticleSystem>().Play();
-                if (Vector3.Distance(electricityCircle.transform.position, endWire.transform.position) < .1f) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                if (Vector3.Distance(electricityCircle.transform.position, endWire.transform.position) < .1f) {
+                    finishLevel();
+                }
             }
         }
+    }
+
+    public static void finishLevel() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if (SceneManager.GetSceneByName("MainMenu").buildIndex == SceneManager.GetActiveScene().buildIndex + 1) PlayerPrefs.SetInt("mostRecentSceneIndex", 0); //if you win (beat level right before mainmenu) then you win the game and your savedscene resets
     }
 }

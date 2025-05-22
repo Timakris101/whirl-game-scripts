@@ -37,7 +37,7 @@ public class DialogueManager : MonoBehaviour {
     private void endConversation() {
         clear();
         conversationOn = false;
-        if (useForCutscene) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if (useForCutscene) EndLevelScript.finishLevel();
     }
 
     private void goToNextDialogue() {
