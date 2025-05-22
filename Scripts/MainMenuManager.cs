@@ -11,10 +11,6 @@ public class MainMenuManager : MonoBehaviour {
     }
 
     void Update() {
-        if (PlayerPrefs.GetInt("mostRecentSceneIndex") == 0) {
-            continueButton.SetActive(false);
-        } else {
-            continueButton.SetActive(true);
-        }
+        continueButton.SetActive(PlayerPrefs.GetInt("mostRecentSceneIndex") == 1);
     }
 }
