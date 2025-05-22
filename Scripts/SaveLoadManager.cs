@@ -12,12 +12,4 @@ public class SaveLoadManager : MonoBehaviour {
     public void load() {
         SceneManager.LoadScene(PlayerPrefs.GetInt("mostRecentSceneIndex"));
     }
-
-    void Update() {
-        if (SceneManager.GetActiveScene().name != "MainMenu") { //this makes it so the only way your sceneindex can be at the mainmenu is victory
-            if (PlayerPrefs.GetInt("mostRecentSceneIndex") != SceneManager.GetActiveScene().buildIndex) {
-                PlayerPrefs.SetInt("mostRecentSceneIndex", SceneManager.GetActiveScene().buildIndex);
-            } 
-        }
-    }
 }
