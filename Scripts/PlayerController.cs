@@ -81,7 +81,6 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetMouseButtonDown(1)) {
             if (grabbedObj == null && canGrab) { //grabs obj
                 grabbedObj = cols[whichCanGrabIndex].gameObject;
-                grabbedObjUndisturbedScale = cols[whichCanGrabIndex].transform.localScale;
             } else { //ungrabs obj
                 grabbedObj = null;
             }
