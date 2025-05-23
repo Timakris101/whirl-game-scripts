@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float worldSpinSpeed; //spins world at speed
     private GameObject grabbedObj;
     [SerializeField] private float grabRad;
-    private Vector3 grabbedObjUndisturbedScale;
 
     [SerializeField] private bool defectiveTracks;
     [SerializeField] private bool defectiveArms;
@@ -88,7 +87,6 @@ public class PlayerController : MonoBehaviour {
             }
         }
         if (grabbedObj != null) { //moves grabbed obj to position and rotation
-            grabbedObj.transform.localScale = new Vector3(direction * grabbedObjUndisturbedScale.x, grabbedObjUndisturbedScale.y, grabbedObjUndisturbedScale.z);
             grabbedObj.transform.eulerAngles = grabArea.eulerAngles;
             grabbedObj.transform.position = grabArea.position;
             grabbedObj.GetComponent<Rigidbody2D>().angularVelocity = 0;
