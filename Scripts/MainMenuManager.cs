@@ -11,11 +11,11 @@ public class MainMenuManager : MonoBehaviour {
     }
 
     void Update() {
-        continueButton.SetActive(PlayerPrefs.GetInt("mostRecentSceneIndex") == 1);
+        continueButton.SetActive(PlayerPrefs.GetInt("mostRecentSceneIndex") != 0);
     }
 
     public void restart() {
-        PlayerPrefs.SetInt("mostRecentSceneIndex", 0);
+        PlayerPrefs.SetInt("mostRecentSceneIndex", 1);
         load();
     }
 

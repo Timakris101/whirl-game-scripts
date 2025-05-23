@@ -47,11 +47,12 @@ public class EndLevelScript : MonoBehaviour {
     }
 
     public static void finishLevel() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        if (SceneManager.GetSceneByName("MainMenu").buildIndex == SceneManager.GetActiveScene().buildIndex + 1) {
-            PlayerPrefs.SetInt("mostRecentSceneIndex", 0); //if you win (beat level right before mainmenu) then you win the game and your savedscene resets
+        if (SceneManager.GetActiveScene().buildIndex + 1 == SceneManager.sceneCountInBuildSettings) { //final level check
+            PlayerPrefs.SetInt("mostRecentSceneIndex", 0); //if you win (beat final level) then you win the game, go to main menu, and your savedscene resets
+            SceneManager.LoadScene(0); //bi of main menu
         } else {
             PlayerPrefs.SetInt("mostRecentSceneIndex", PlayerPrefs.GetInt("mostRecentSceneIndex") + 1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }
