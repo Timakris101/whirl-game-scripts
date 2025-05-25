@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
     private int direction = 1; //which way is the player facing
     private float undirectedlocalScaleX; //place to save the local scale of the x even while it is rotated
     [SerializeField] private float playerSpinSpeed; //how fast the player rotates towards the alignment vector
+    [SerializeField] private float alignmentThreshold = .1f;
     [SerializeField] private float worldSpinSpeed; //spins world at speed
     private GameObject grabbedObj;
     [SerializeField] private float grabRad;
@@ -208,7 +209,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private bool aligned() {
-        return transform.rotation == Quaternion.LookRotation(transform.forward, normalVector);
+        return Mathf.Abs(Quaternion.Angle(transform.rotation, Quaternion.LookRotation(transform.forward, normalVector))) < alignmentThreshold;
     }
 
     private bool canFlutter() { //can the player "flutter"
