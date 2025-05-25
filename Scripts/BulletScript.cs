@@ -8,12 +8,21 @@ public class BulletScript : MonoBehaviour {
     [SerializeField] private float timer = 0;
     [SerializeField] private float damage = 1;
     [SerializeField] private bool bouncy;
+    [SerializeField] private int maxBounceAmt;
+    private int bounceAmt = 0;
 
     void OnCollisionEnter2D(Collision2D col) { //if bullet hits object damage object
         if (col.gameObject.GetComponent<Health>() != null) {
             col.gameObject.GetComponent<Health>().removeHealth(damage);
         }
-        if (!bouncy) Destroy(gameObject);
+        if (!bouncy) {
+            Destroy(gameObject);
+        } else {
+            bounceAmt++;
+            if (bounceAmt > maxBounceAmt) {
+                Destroy(gameObject);
+            }
+        }
     }
 
     void Update() { //if bullet has outlived its lifetime it dies
