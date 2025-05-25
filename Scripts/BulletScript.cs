@@ -12,7 +12,6 @@ public class BulletScript : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D col) { //if bullet hits object damage object
         if (col.gameObject.GetComponent<Health>() != null) {
             col.gameObject.GetComponent<Health>().removeHealth(damage);
-            Destroy(gameObject);
         }
         if (!bouncy) Destroy(gameObject);
     }

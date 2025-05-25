@@ -25,4 +25,8 @@ public class Health : MonoBehaviour {
     public void removeHealth(float amt) {
         health -= amt;
     }
+
+    public float getHealth() {
+        return health;
+    }
 }
