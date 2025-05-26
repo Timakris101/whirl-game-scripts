@@ -19,7 +19,7 @@ public class Health : MonoBehaviour {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
-        if (transform.position.y < -1000) health = 0; //kills obj if they are too low
+        if (transform.position.y < -10000) health = 0; //kills obj if they are too low
     }
 
     public void removeHealth(float amt) {
