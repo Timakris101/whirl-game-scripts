@@ -40,7 +40,8 @@ public class LaserAction : Action {
         RaycastHit2D hit = Physics2D.CircleCast(positionLaserStart + dir.getVectorInDir() * laserWidth, laserWidth, dir.getVectorInDir()); //cast a ray to the right
         boss.GetComponent<LineRenderer>().SetPosition(0, positionLaserStart); //sets lr pos
         boss.GetComponent<LineRenderer>().SetPosition(1, hit.point);
-        boss.GetComponent<LineRenderer>().SetWidth(laserWidth, laserWidth);
+        boss.GetComponent<LineRenderer>().startWidth = laserWidth;
+        boss.GetComponent<LineRenderer>().endWidth = laserWidth;
         if (hit) {
             if (hit.transform.gameObject.GetComponent<Health>() != null) { //does damage
                 hit.transform.gameObject.GetComponent<Health>().removeHealth(laserDamage);

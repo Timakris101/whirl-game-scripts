@@ -11,7 +11,7 @@ public class WireScript : MonoBehaviour {
         GetComponent<SpriteRenderer>().color = unlitColor;
     }
 
-    public void light() {
+    new public void light() {
         if (!isLit) GetComponent<SpriteRenderer>().color = litColor;
         isLit = true;
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Dialogue : MonoBehaviour {
     [SerializeField] string[] sentences;
-    [SerializeField] private string name;
+    [SerializeField] new private string name; 
     [SerializeField] private Sprite sprite;
 
     public string getSentence(int index) {

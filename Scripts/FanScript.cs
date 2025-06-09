@@ -10,7 +10,8 @@ public class FanScript : MonoBehaviour {
     void Start() {
         GetComponent<BoxCollider2D>().size = new Vector2(GetComponent<BoxCollider2D>().size.x, affectDist);
         GetComponent<BoxCollider2D>().offset = new Vector2(0, affectDist / 2);
-        GetComponent<ParticleSystem>().startSpeed = strength;
+        var main = GetComponent<ParticleSystem>().main;
+        main.startSpeed = strength;
     }
 
     void OnTriggerStay2D(Collider2D col) {
