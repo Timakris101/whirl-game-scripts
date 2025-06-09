@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MissileAction : Action {
-
     private float maxMissileCount = 2;
     private GameObject missile;
     private float missileInaccuracy = .1f;
@@ -26,7 +25,6 @@ public class MissileAction : Action {
 }
 
 public class LaserAction : Action {
-
     private float maxLaserTime = 1;
     private float laserWidth = .5f;
     private float laserDamage = 1;
@@ -62,7 +60,6 @@ public class LaserAction : Action {
 }
 
 public class BulletAction : Action {
-
     private float maxBulletCount = 10;
     private GameObject bullet;
     private float bulletInaccuracy = .5f;
@@ -85,7 +82,6 @@ public class BulletAction : Action {
 }
 
 public class TurretAction : Action {
-
     protected float maxTurretCount = 1;
 
     public TurretAction(GameObject boss) : base(boss) {
@@ -196,6 +192,8 @@ public class Direction {
 
 public class BossScript : MonoBehaviour {
     private Action[] actions = new Action[4];
+    private float timer;
+    [SerializeField] private float delay;
     [SerializeField] private int maxActions;
     [SerializeField] private Sprite leftFacing;
     [SerializeField] private Sprite midFacing;
@@ -220,21 +218,31 @@ public class BossScript : MonoBehaviour {
     void Update() {
         if (GameObject.Find("DialogueManager").GetComponent<DialogueManager>().conversationOver()) {
             handleDirection();
-            bool enoughActionsRunning = false;
-            int actionsRunning = 0;
-            foreach (Action a in actions) {
-                if (a.getRunning()) {
-                    actionsRunning++;
-                }
-            }
-            enoughActionsRunning = actionsRunning >= maxActions;
-            if (!enoughActionsRunning) {
+            handleActions();
+        }
+    }
+
+    public void handleActions() {
+        timer += Time.deltaTime;
+        if (timer > delay) {
+            timer = 0;
+            if (!enoughActionsRunning()) {
                 actions[Random.Range(0, 4)].startAction();
             }
-            foreach (Action a in actions) {
-                a.runAction();
+        }
+        foreach (Action a in actions) {
+            a.runAction();
+        }
+    }
+
+    public bool enoughActionsRunning() {
+        int actionsRunning = 0;
+        foreach (Action a in actions) {
+            if (a.getRunning()) {
+                actionsRunning++;
             }
         }
+        return actionsRunning >= maxActions;
     }
 
     public Direction getDirFacing() {
