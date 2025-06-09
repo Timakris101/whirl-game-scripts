@@ -2,43 +2,122 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Action {
-
-    private string type;
-    private bool running;
-    private float counter;
-    private float timer;
+public class MissileAction : Action {
 
     private float maxMissileCount = 2;
     private GameObject missile;
     private float missileInaccuracy = .1f;
 
+    public MissileAction(GameObject boss) : base(boss) {
+        missile = boss.GetComponent<BossScript>().getMissile();
+
+        delay = 1f;
+        maxCount = maxMissileCount;
+    }
+
+    public override void run() {
+        GameObject newMissile = GameObject.Instantiate(missile, boss.transform.Find("MissileSpawn").position, boss.transform.rotation); //makes a new missile at the launcher area
+        newMissile.GetComponent<Rigidbody2D>().velocity = (Vector2) (-boss.transform.up) * newMissile.GetComponent<MissileScript>().getSpeed() + (Vector2) boss.transform.right * Random.Range(-missileInaccuracy, missileInaccuracy); //adds proper speed to the missile
+    }
+
+    public override void increment() {
+        counter++;
+    }
+}
+
+public class LaserAction : Action {
+
     private float maxLaserTime = 1;
     private float laserWidth = .5f;
     private float laserDamage = 1;
+
+    public LaserAction(GameObject boss) : base(boss) {
+        delay = 0f;
+        maxCount = maxLaserTime;
+    }
+
+    public override void run() {
+        Direction dir = boss.GetComponent<BossScript>().getDirFacing();
+        Vector2 positionLaserStart = boss.transform.Find(dir.getName() + "LaserSpawn").position;
+        RaycastHit2D hit = Physics2D.CircleCast(positionLaserStart + dir.getVectorInDir() * laserWidth, laserWidth, dir.getVectorInDir()); //cast a ray to the right
+        boss.GetComponent<LineRenderer>().SetPosition(0, positionLaserStart); //sets lr pos
+        boss.GetComponent<LineRenderer>().SetPosition(1, hit.point);
+        boss.GetComponent<LineRenderer>().SetWidth(laserWidth, laserWidth);
+        if (hit) {
+            if (hit.transform.gameObject.GetComponent<Health>() != null) { //does damage
+                hit.transform.gameObject.GetComponent<Health>().removeHealth(laserDamage);
+            }
+        }
+    }
+
+    public override void endAction() {
+        base.endAction();
+        boss.GetComponent<LineRenderer>().SetPosition(0, new Vector3(0, 0, 0));
+        boss.GetComponent<LineRenderer>().SetPosition(1, new Vector3(0, 0, 0));
+    }
+
+    public override void increment() {
+        counter += Time.deltaTime;
+    }
+}
+
+public class BulletAction : Action {
 
     private float maxBulletCount = 10;
     private GameObject bullet;
     private float bulletInaccuracy = .5f;
 
-    private float maxTurretCount = 2;
-
-    private float delay;
-
-    private GameObject boss;
-
-    public Action(string type, GameObject boss) {
-        this.type = type;
-        this.boss = boss;
+    public BulletAction(GameObject boss) : base(boss) {
         bullet = boss.GetComponent<BossScript>().getBullet();
-        missile = boss.GetComponent<BossScript>().getMissile();
+
+        delay = .1f;
+        maxCount = maxBulletCount;
+    }
+
+    public override void run() {
+        GameObject newBullet = GameObject.Instantiate(bullet, boss.transform.Find("BulletSpawn").position, boss.transform.rotation); //makes a new bullet at the gun launcher area
+        newBullet.GetComponent<Rigidbody2D>().velocity = (Vector2) (-boss.transform.up) * newBullet.GetComponent<BulletScript>().getBulletInitSpeed() + (Vector2) boss.transform.right * Random.Range(-bulletInaccuracy, bulletInaccuracy); //adds proper speed to the bullet
+    }
+
+    public override void increment() {
+        counter++;
+    }
+}
+
+public class TurretAction : Action {
+
+    protected float maxTurretCount = 1;
+
+    public TurretAction(GameObject boss) : base(boss) {
+        delay = 1f;
+        maxCount = maxTurretCount;
+    }
+
+    public override void run() {
+        boss.transform.Find("TurretChute").gameObject.GetComponent<ChuteScript>().shoot();
+    }
+
+    public override void increment() {
+        counter++;
+    }
+}
+
+public abstract class Action {
+    private bool running;
+
+    protected float counter;
+    protected float maxCount;
+
+    private float timer;
+    protected float delay;
+
+    protected GameObject boss;
+
+    public Action(GameObject boss) {
+        this.boss = boss;
         running = false;
         counter = 0;
-
-        if (type.Equals("missile")) delay = 1f;
-        if (type.Equals("laser")) delay = 0f;
-        if (type.Equals("bullet")) delay = .1f;
-        if (type.Equals("turret")) delay = 1f;
+        timer = 0;
     }
 
     public void runAction() {
@@ -46,54 +125,20 @@ public class Action {
             timer += Time.deltaTime;
             if (timer > delay) {
                 timer = 0;
-                if (type == "missile") {
-                    GameObject newMissile = GameObject.Instantiate(missile, boss.transform.Find("MissileSpawn").position, boss.transform.rotation); //makes a new missile at the launcher area
-                    newMissile.GetComponent<Rigidbody2D>().velocity = (Vector2) (-boss.transform.up) * newMissile.GetComponent<MissileScript>().getSpeed() + (Vector2) boss.transform.right * Random.Range(-missileInaccuracy, missileInaccuracy); //adds proper speed to the missile
-                    counter++;
-                    if (counter > maxMissileCount) {
-                        endAction();
-                    }
-                }
-                if (type == "laser") {
-                    Direction dir = boss.GetComponent<BossScript>().getDirFacing();
-                    Vector2 positionLaserStart = boss.transform.Find(dir.getName() + "LaserSpawn").position;
-                    RaycastHit2D hit = Physics2D.CircleCast(positionLaserStart + dir.getVectorInDir() * laserWidth, laserWidth, dir.getVectorInDir()); //cast a ray to the right
-                    boss.GetComponent<LineRenderer>().SetPosition(0, positionLaserStart); //sets lr pos
-                    boss.GetComponent<LineRenderer>().SetPosition(1, hit.point);
-                    boss.GetComponent<LineRenderer>().SetWidth(laserWidth, laserWidth);
-                    if (hit) {
-                        if (hit.transform.gameObject.GetComponent<Health>() != null) { //does damage
-                            hit.transform.gameObject.GetComponent<Health>().removeHealth(laserDamage);
-                        }
-                    }
-
-                    counter += Time.deltaTime;
-                    if (counter > maxLaserTime) {
-                        boss.GetComponent<LineRenderer>().SetPosition(0, new Vector3(0, 0, 0));
-                        boss.GetComponent<LineRenderer>().SetPosition(1, new Vector3(0, 0, 0));
-                        endAction();
-                    }
-                }
-                if (type == "bullet") {
-                    GameObject newBullet = GameObject.Instantiate(bullet, boss.transform.Find("BulletSpawn").position, boss.transform.rotation); //makes a new bullet at the gun launcher area
-                    newBullet.GetComponent<Rigidbody2D>().velocity = (Vector2) (-boss.transform.up) * newBullet.GetComponent<BulletScript>().getBulletInitSpeed() + (Vector2) boss.transform.right * Random.Range(-bulletInaccuracy, bulletInaccuracy); //adds proper speed to the bullet
-                    counter++;
-                    if (counter > maxBulletCount) {
-                        endAction();
-                    }
-                }
-                if (type == "turret") {
-                    GameObject.Find("TurretChute").GetComponent<ChuteScript>().shoot();
-                    counter++;
-                    if (counter > maxTurretCount) {
-                        endAction();
-                    }
+                run();
+                increment();
+                if (counter > maxCount) {
+                    endAction();
                 }
             }
         }
     }
 
-    public void endAction() {
+    public virtual void increment() {}
+
+    public virtual void run() {}
+
+    public virtual void endAction() {
         running = false;
         counter = 0;
     }
@@ -162,10 +207,10 @@ public class BossScript : MonoBehaviour {
     private Direction dirFacing;
 
     void Start() {
-        actions[0] = new Action("missile", gameObject);
-        actions[1] = new Action("laser", gameObject);
-        actions[2] = new Action("bullet", gameObject);
-        actions[3] = new Action("turret", gameObject);
+        actions[0] = new MissileAction(gameObject);
+        actions[1] = new LaserAction(gameObject);
+        actions[2] = new BulletAction(gameObject);
+        actions[3] = new TurretAction(gameObject);
 
         directions[0] = new Direction("left", gameObject);
         directions[1] = new Direction("middle", gameObject);
