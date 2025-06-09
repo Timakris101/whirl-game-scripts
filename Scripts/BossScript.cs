@@ -192,7 +192,7 @@ public class Direction {
 }
 
 public class BossScript : MonoBehaviour {
-    private Action[] actions = new Action[4];
+    private List<Action> actions = new List<Action>();
     private float timer;
     [SerializeField] private float delay;
     [SerializeField] private int maxActions;
@@ -206,10 +206,10 @@ public class BossScript : MonoBehaviour {
     private Direction dirFacing;
 
     void Start() {
-        actions[0] = new MissileAction(gameObject);
-        actions[1] = new LaserAction(gameObject);
-        actions[2] = new BulletAction(gameObject);
-        actions[3] = new TurretAction(gameObject);
+        actions.Add(new MissileAction(gameObject));
+        actions.Add(new LaserAction(gameObject));
+        actions.Add(new BulletAction(gameObject));
+        actions.Add(new TurretAction(gameObject));
 
         directions[0] = new Direction("left", gameObject);
         directions[1] = new Direction("middle", gameObject);
@@ -228,7 +228,7 @@ public class BossScript : MonoBehaviour {
         if (timer > delay) {
             timer = 0;
             if (!enoughActionsRunning()) {
-                actions[Random.Range(0, 4)].startAction();
+                actions[Random.Range(0, actions.Count)].startAction();
             }
         }
         foreach (Action a in actions) {
