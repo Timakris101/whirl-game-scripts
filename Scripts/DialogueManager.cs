@@ -14,6 +14,7 @@ public class DialogueManager : MonoBehaviour {
     private float indexLetter = -1;
     [SerializeField] private float writingSpeed = 10;
     private bool conversationOn;
+    private bool conversationStarted;
 
     private GameObject dialogueTextBox;
     private GameObject nameTextBox;
@@ -26,6 +27,7 @@ public class DialogueManager : MonoBehaviour {
         indexLetter = 0;
         transform.GetChild(0).gameObject.SetActive(true);
         conversationOn = true;
+        conversationStarted = true;
     }
 
     private void clear() {
@@ -92,5 +94,9 @@ public class DialogueManager : MonoBehaviour {
     void Update() {
         if (indexConversation == dialogues.Length) endConversation();
         if (conversationOn) dispDialogue();
+    }
+
+    public bool conversationOver() {
+        return !conversationOn && conversationStarted;
     }
 }

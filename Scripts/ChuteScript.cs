@@ -21,7 +21,7 @@ public class ChuteScript : MonoBehaviour {
         on = false;
     }
 
-    private void shoot() {
+    public void shoot() {
         GameObject newThing = Instantiate(thingToSpawn, transform.position, transform.rotation);
         newThing.GetComponent<Rigidbody2D>().velocity = transform.right * speedToSpawnWith;
     }

@@ -18,8 +18,8 @@ public class MissileScript : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    void Start() {
-        GetComponent<Rigidbody2D>().velocity = speed * transform.up;
+    public float getSpeed() {
+        return speed;
     }
 
     void Update() {
