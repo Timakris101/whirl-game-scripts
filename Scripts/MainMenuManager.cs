@@ -11,7 +11,7 @@ public class MainMenuManager : MonoBehaviour {
     }
 
     void Update() {
-        continueButton.SetActive(PlayerPrefs.GetInt("mostRecentSceneIndex") != 0);
+        continueButton.SetActive(PlayerPrefs.GetInt("mostRecentSceneIndex", 0) != 0);
     }
 
     public void restart() {
@@ -19,8 +19,12 @@ public class MainMenuManager : MonoBehaviour {
         load();
     }
 
+    public void reset() {
+        PlayerPrefs.SetInt("mostRecentSceneIndex", 0);
+    }
+
     public void load() {
-        SceneManager.LoadScene(PlayerPrefs.GetInt("mostRecentSceneIndex"));
+        SceneManager.LoadScene(PlayerPrefs.GetInt("mostRecentSceneIndex", 0));
     }
 
     public void quit() {
