@@ -82,23 +82,6 @@ public class BulletAction : Action {
     }
 }
 
-public class TurretAction : Action {
-    protected float maxTurretCount = 1;
-
-    public TurretAction(GameObject boss) : base(boss) {
-        delay = 1f;
-        maxCount = maxTurretCount;
-    }
-
-    public override void run() {
-        boss.transform.Find("TurretChute").gameObject.GetComponent<ChuteScript>().shoot();
-    }
-
-    public override void increment() {
-        counter++;
-    }
-}
-
 public abstract class Action {
     private bool running;
 
@@ -209,7 +192,6 @@ public class BossScript : MonoBehaviour {
         actions.Add(new MissileAction(gameObject));
         actions.Add(new LaserAction(gameObject));
         actions.Add(new BulletAction(gameObject));
-        actions.Add(new TurretAction(gameObject));
 
         directions[0] = new Direction("left", gameObject);
         directions[1] = new Direction("middle", gameObject);
