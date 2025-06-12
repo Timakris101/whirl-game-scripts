@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
-        if (Input.GetMouseButtonDown(1)) {
+        if (Input.GetMouseButtonDown(0)) {
             if (grabbedObj == null && canGrab) { //grabs obj
                 grabbedObj = cols[whichCanGrabIndex].gameObject;
             } else { //ungrabs obj
