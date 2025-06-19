@@ -23,10 +23,10 @@ public class Health : MonoBehaviour {
         } else {
             if (health <= 0) {
                 if (deathEffect != null) Instantiate(deathEffect, gameObject.transform.position, Quaternion.identity);
-                if (gameObject.transform.tag != "Player") Destroy(gameObject);
-
-                Camera.main.transform.SetParent(null, true);
-                Camera.main.gameObject.AddComponent<Health>();
+                if (gameObject.transform.tag == "Player") {
+                    Camera.main.transform.SetParent(null, true);
+                    Camera.main.gameObject.AddComponent<Health>();
+                }
                 Destroy(gameObject);
             }
             if (transform.position.y < -10000) health = 0; //kills obj if they are too low
