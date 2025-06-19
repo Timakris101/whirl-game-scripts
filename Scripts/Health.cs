@@ -7,7 +7,7 @@ public class Health : MonoBehaviour {
     [SerializeField] private float maxHealth;
     [SerializeField] private float health;
     private static float resetDelay = 1f;
-    private static float timer;
+    private float timer; //resets with new script
 
     [SerializeField] private GameObject deathEffect;
 
@@ -19,7 +19,7 @@ public class Health : MonoBehaviour {
     void Update() {
         if (gameObject == Camera.main.gameObject && Camera.main.transform.parent == null) {
             handleSeperatedCam();
-            
+
         } else {
             if (health <= 0) {
                 Instantiate(deathEffect, gameObject.transform.position, Quaternion.identity);
