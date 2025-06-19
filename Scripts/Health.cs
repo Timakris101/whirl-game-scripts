@@ -22,7 +22,7 @@ public class Health : MonoBehaviour {
 
         } else {
             if (health <= 0) {
-                Instantiate(deathEffect, gameObject.transform.position, Quaternion.identity);
+                if (deathEffect != null) Instantiate(deathEffect, gameObject.transform.position, Quaternion.identity);
                 if (gameObject.transform.tag != "Player") Destroy(gameObject);
 
                 Camera.main.transform.SetParent(null, true);
