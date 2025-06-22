@@ -9,6 +9,7 @@ public class BulletScript : MonoBehaviour {
     [SerializeField] private float damage = 1;
     [SerializeField] private bool bouncy;
     [SerializeField] private int maxBounceAmt;
+    [SerializeField] private GameObject bulletEffect;
     private int bounceAmt = 0;
 
     void OnCollisionEnter2D(Collision2D col) { //if bullet hits object damage object
@@ -16,13 +17,18 @@ public class BulletScript : MonoBehaviour {
             col.gameObject.GetComponent<Health>().removeHealth(damage);
         }
         if (!bouncy) {
-            Destroy(gameObject);
+            killBullet();
         } else {
             bounceAmt++;
             if (bounceAmt > maxBounceAmt) {
-                Destroy(gameObject);
+                killBullet();
             }
         }
+    }
+
+    private void killBullet() {
+        Instantiate(bulletEffect, gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     void Update() { //if bullet has outlived its lifetime it dies
