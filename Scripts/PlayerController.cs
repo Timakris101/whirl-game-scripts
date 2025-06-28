@@ -143,6 +143,12 @@ public class PlayerController : MonoBehaviour {
                 GetComponent<Animator>().speed = 0;
             }
         }
+        ParticleSystem tracks = transform.Find("TrackEffect").GetComponent<ParticleSystem>();
+        if (moved && ground != null) {
+            if (!tracks.isPlaying) tracks.Play(false);
+        } else {
+            tracks.Stop(false);
+        }
     }
 
     void handleJumping() {
