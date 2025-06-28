@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour {
         GetComponent<Animator>().speed = 0; //makes the animation be stopped  unless there is an input below
         bool canMove = true;
         bool moved = false;
-        if (ground != null && !aligned()) canMove = false; //if you are on ground and not aligned with vector you cant move
+        if (!aligned()) canMove = false; //if you are not aligned with vector you cant move
         if (Input.GetKey("d") && canMove) {
             moved = true;
             GetComponent<Transform>().position += transform.right * speed * Time.deltaTime; //moves right
@@ -216,7 +216,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private bool aligned() {
-        return Mathf.Abs(Quaternion.Angle(transform.rotation, Quaternion.LookRotation(transform.forward, normalVector))) < alignmentThreshold;
+        return Mathf.Abs(Quaternion.Angle(transform.rotation, Quaternion.LookRotation(transform.forward, ground != null ? normalVector : Vector3.up))) < alignmentThreshold;
     }
 
     private bool canFlutter() { //can the player "flutter"
