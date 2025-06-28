@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float worldSpinSpeed; //spins world at speed
     private GameObject grabbedObj;
     [SerializeField] private float grabRad;
+    private float baseGrabDist;
 
     [SerializeField] private bool defectiveTracks;
     [SerializeField] private bool defectiveArms;
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 
     void Start() { //saves the x scale to not cause issues when turning the player model
         undirectedlocalScaleX = transform.localScale.x;
+        baseGrabDist = Vector3.Magnitude(transform.Find("GrabArea").position - transform.position);
     }
 
     void Update() {
@@ -69,6 +71,16 @@ public class PlayerController : MonoBehaviour {
         bool canGrab = false;
         int whichCanGrabIndex = -1;
         Transform grabArea = transform.Find("GrabArea");
+
+        grabArea.position = transform.position + transform.right * direction * baseGrabDist;
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, transform.right * direction, baseGrabDist);
+        foreach (RaycastHit2D hit in hits) {
+            if (hit.transform.gameObject != gameObject && hit.transform.gameObject != grabbedObj){
+                grabArea.position = hit.point;
+                break;
+            }
+        }
+
         Collider2D[] cols = Physics2D.OverlapCircleAll((Vector2) grabArea.position, grabRad);
         for (int i = 0; i < cols.Length; i++) { //checks all objects around area and selects the grabbable one
             if (cols[i] != null) {
