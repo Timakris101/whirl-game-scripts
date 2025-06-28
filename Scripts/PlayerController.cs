@@ -135,6 +135,7 @@ public class PlayerController : MonoBehaviour {
             GetComponent<Transform>().position += transform.right * speed * -1 * Time.deltaTime; //moves left
             direction = -1; //makes the player face left
         }
+        if (Input.GetKey("a") && Input.GetKey("d")) moved = false;
         if (moved) {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, GetComponent<Rigidbody2D>().velocity.y); //sets x speed lower so it doesn’t keep its speed and move improperly
             if (GetComponent<Animator>().speed == 0) {//makes the animation for the player play, if only a or d
